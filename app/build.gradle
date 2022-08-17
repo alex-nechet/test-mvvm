@@ -1,0 +1,95 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+}
+apply plugin: "kotlin-android-extensions"
+apply plugin: "androidx.navigation.safeargs.kotlin"
+
+android {
+    compileSdkVersion buildConfig.compileSdk
+    defaultConfig {
+        applicationId "com.alex.android.git"
+        minSdkVersion buildConfig.minSdk
+        targetSdkVersion buildConfig.targetSdk
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "BASE_URL", '"https://api.github.com/"')
+        buildConfigField("String", "TOKEN", '"TOKEN"')
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += [
+                        "room.schemaLocation"  : "$projectDir/schemas".toString(),
+                        "room.incremental"     : "true",
+                        "room.expandProjection": "true"
+                ]
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled false
+            debuggable true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+    }
+    compileOptions {
+        sourceCompatibility = buildConfig.javaVersion
+        targetCompatibility = buildConfig.javaVersion
+    }
+
+    kotlinOptions {
+        jvmTarget = buildConfig.javaVersion.toString()
+    }
+
+    buildFeatures {
+        dataBinding true
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation source.kotlin.stdlib
+    implementation source.kotlin.coroutines
+    implementation source.androidx.appcompat
+    implementation source.androidx.core
+    implementation source.androidx.constraint
+    implementation source.androidx.lifecycle
+    implementation source.androidx.recycler
+    implementation source.androidx.paging
+    implementation source.google.material
+    implementation source.retrofit.core
+    implementation source.retrofit.converter_moshi
+    implementation source.okhttp.logging
+    implementation source.koin.core
+    implementation source.koin.android
+    implementation source.room.runtime
+    implementation source.room.ktx
+    implementation source.room.paging
+    kapt source.room.compiler
+    implementation source.androidx.navigation_fragment
+    implementation source.androidx.navigation_ui
+    implementation source.androidx.swiperefresh
+    implementation source.moshi.core
+    implementation source.moshi.adapters
+    implementation source.coil
+    kapt source.moshi.codegen
+
+    testImplementation source.koin.test
+    testImplementation source.testing.junit
+    testImplementation source.testing.mockito
+    testImplementation source.testing.mokito_kotlin
+    testImplementation source.testing.mokito_inline
+    testImplementation source.testing.core_testing
+    testImplementation source.testing.coroutines_test
+
+    androidTestImplementation source.testing.espresso
+}

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.alex.android.git.presentation.DetailViewModel" />
+
+        <import type="android.text.TextUtils" />
+
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:orientation="vertical"
+                app:visibility="@{!viewModel.loading}"
+                tools:context=".list.ListFragment">
+
+                <!--                cannot setup foreground directly to image min api 23 required-->
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/header_image_height"
+                    android:foreground="@drawable/gradient"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/header_image_height"
+                        android:scaleType="centerCrop"
+                        app:src="@{viewModel.headerInfo.avatarUrl}" />
+
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="2"
+                    android:padding="@dimen/space_16"
+                    android:text="@{viewModel.headerInfo.login}"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintBottom_toTopOf="@id/url"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:text="Name" />
+
+
+                <TextView
+                    android:id="@+id/url"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/space_16"
+                    android:text="@{viewModel.headerInfo.url}"
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:text="http/me.com" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:minHeight="@dimen/header_image_height"
+                android:padding="@dimen/space_16">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <include
+                        layout="@layout/item_details"
+                        app:header="@{@string/email}"
+                        app:text="@{viewModel.bodyInfo.email}" />
+
+                    <include
+                        layout="@layout/item_details"
+                        app:header="@{@string/following}"
+                        app:text="@{viewModel.bodyInfo.following}" />
+
+                    <include
+                        layout="@layout/item_details"
+                        app:header="@{@string/followers}"
+                        app:text="@{viewModel.bodyInfo.followers}" />
+
+                    <include
+                        layout="@layout/item_details"
+                        app:header="@{@string/twitter}"
+                        app:text="@{viewModel.bodyInfo.twitterUsername}" />
+
+                    <include
+                        layout="@layout/item_details"
+                        app:header="@{@string/company}"
+                        app:text="@{viewModel.bodyInfo.company}" />
+
+                    <include
+                        layout="@layout/item_details"
+                        app:header="@{@string/location}"
+                        app:text="@{viewModel.bodyInfo.location}" />
+
+                    <include
+                        layout="@layout/item_details"
+                        app:header="@{@string/about_me}"
+                        app:text="@{viewModel.bodyInfo.bio}" />
+
+                </LinearLayout>
+
+                <include
+                    layout="@layout/layout_error"
+                    app:errorText="@{viewModel.errorMessage}"
+                    app:visibility="@{viewModel.error}" />
+
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    app:visibility="@{viewModel.loading}" />
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</layout>
