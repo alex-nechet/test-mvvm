@@ -1,18 +1,15 @@
-package com.alex.android.git.network
+package com.example.network.di
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import com.alex.android.git.BuildConfig
-import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
-import okhttp3.Interceptor
+import com.example.network.ApiProvider
+import com.example.network.BuildConfig
+import com.example.network.ResponseConverter
 import okhttp3.OkHttpClient
-import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
-import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import kotlin.math.sin
 
 private const val API_KEY = "api_key"
 
@@ -51,6 +48,6 @@ object Koin {
                 .client(get())
                 .build()
         }
-        factory { ApiProvider(get()) }
+        single { ApiProvider(get(), get()) }
     }
 }

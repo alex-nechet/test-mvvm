@@ -1,4 +1,4 @@
-package com.alex.android.git.network
+package com.example.network
 
 import retrofit2.Response
 import retrofit2.Retrofit

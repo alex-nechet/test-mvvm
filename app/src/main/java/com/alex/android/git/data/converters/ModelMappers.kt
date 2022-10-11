@@ -2,10 +2,10 @@ package com.alex.android.git.data.converters
 
 import com.alex.android.git.data.model.BriefInfo
 import com.alex.android.git.data.model.OtherInfo
-import com.alex.android.git.data.model.User
 import com.alex.android.git.data.model.UserDb
+import com.example.network.model.UserResponse
 
-fun User.toDb(): UserDb = UserDb(
+fun UserResponse.toDb(): UserDb = UserDb(
     login = login.orEmpty(),
     id = id,
     nodeId = nodeId.orEmpty(),
@@ -33,7 +33,7 @@ fun UserDb.toBriefInfo() = BriefInfo(
     url = url
 )
 
-fun User.toOtherInfo() = OtherInfo(
+fun UserResponse.toOtherInfo() = OtherInfo(
     company = company.orEmpty(),
     location = location.orEmpty(),
     email = email.orEmpty(),

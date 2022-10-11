@@ -1,6 +1,5 @@
 package com.alex.android.git.detail
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View

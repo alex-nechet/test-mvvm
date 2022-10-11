@@ -1,4 +1,4 @@
-package com.alex.android.git.network
+package com.example.network
 
 sealed class Result<out T>(open val data: T? = null) {
     class Success<out T>(override val data: T?) : Result<T>(data)

@@ -5,13 +5,12 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
+import coil.network.HttpException
 import com.alex.android.git.data.converters.toDb
 import com.alex.android.git.data.model.UserDb
-import com.alex.android.git.network.ApiProvider
+import com.example.network.ApiProvider
 import com.alex.android.git.repository.db.AppDatabase
-import retrofit2.HttpException
 import java.io.IOException
-import java.util.*
 
 private const val START_PAGE_INDEX = 0L
 
@@ -32,7 +31,7 @@ class RemoteMediator(
         }
 
         try {
-            val response = apiProvider.api.getUsers(page)
+            val response = apiProvider.getUsers(page)
             val isEndOfList = response.isNullOrEmpty()
             appDatabase.withTransaction {
                 if (loadType == LoadType.REFRESH) {

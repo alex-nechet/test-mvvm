@@ -1,14 +1,20 @@
 package com.alex.android.git.presentation
 
-import androidx.lifecycle.*
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
+import androidx.lifecycle.viewModelScope
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.alex.android.git.data.mapNotNull
 import com.alex.android.git.data.model.UserDb
 import com.alex.android.git.interactor.UsersInteractor
-import com.alex.android.git.network.Result
-import kotlinx.coroutines.flow.*
+import com.example.network.Result
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 @ExperimentalPagingApi

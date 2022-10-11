@@ -8,7 +8,7 @@ import org.koin.dsl.module
 object Koin {
 
     val repositoryModule = module {
-        single { UsersRepository(get(), get(), get()) }
+        single { UsersRepository(get(), get()) }
     }
 
     val databaseModule = module {

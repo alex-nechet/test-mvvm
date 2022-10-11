@@ -4,12 +4,11 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.alex.android.git.data.model.User
 import com.alex.android.git.data.model.UserDb
-import com.alex.android.git.network.ApiProvider
-import com.alex.android.git.network.ResponseConverter
-import com.alex.android.git.network.Result
+import com.example.network.Result
 import com.alex.android.git.repository.db.AppDatabase
+import com.example.network.ApiProvider
+import com.example.network.model.UserResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -20,7 +19,6 @@ private const val PAGE_SIZE = 30
 
 class UsersRepository(
     private val apiProvider: ApiProvider,
-    private val responseConverter: ResponseConverter,
     private val appDatabase: AppDatabase
 ) {
 
@@ -41,23 +39,23 @@ class UsersRepository(
         ).flow.flowOn(Dispatchers.IO)
     }
 
-    suspend fun fetchDetails(userId: Long) = flow {
-        emit(Result.Loading())
+     fun fetchDetails(userId: Long): Flow<Result<UserDb>> = flow {
+        emit(Result.Loading<UserDb>())
         try {
             val result: UserDb = appDatabase.usersDao().getUser(userId)
-            emit(Result.Success(result))
+            emit(Result.Success<UserDb>(result))
         } catch (e: Exception) {
             emit(Result.Error<UserDb>(e.message))
         }
     }.flowOn(Dispatchers.IO)
 
-    suspend fun fetchUser(userId: Long) = flow {
-        emit(Result.Loading())
+     fun fetchUser(userId: Long) = flow {
+        emit(Result.Loading<UserResponse>())
         try {
-            val result: Result<User> = responseConverter.toResult {  apiProvider.api.getDetails(userId)}
+            val result: Result<UserResponse> = apiProvider.getDetails(userId)
             emit(result)
         } catch (e: Exception) {
-            emit(Result.Error<User>(e.message))
+            emit(Result.Error<UserResponse>(e.message))
         }
     }.flowOn(Dispatchers.IO)
 }

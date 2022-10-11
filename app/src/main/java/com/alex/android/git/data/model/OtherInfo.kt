@@ -1,6 +1,5 @@
 package com.alex.android.git.data.model
 
-import com.squareup.moshi.Json
 
 data class OtherInfo(
     val company: String,

@@ -1,0 +1,45 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+}
+apply plugin: "kotlin-android-extensions"
+
+android {
+    namespace 'com.example.network'
+    compileSdkVersion buildConfig.compileSdk
+
+    defaultConfig {
+        minSdkVersion buildConfig.minSdk
+        targetSdkVersion buildConfig.targetSdk
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+        buildConfigField("String", "BASE_URL", '"https://api.github.com/"')
+        buildConfigField("String", "TOKEN", '"TOKEN"')
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+    implementation source.retrofit.core
+    implementation source.retrofit.converter_moshi
+    implementation source.okhttp.logging
+    implementation source.koin.core
+    implementation source.koin.android
+    implementation source.moshi.core
+    implementation source.moshi.adapters
+    kapt source.moshi.codegen
+}

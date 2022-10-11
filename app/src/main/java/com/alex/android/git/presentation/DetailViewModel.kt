@@ -1,16 +1,15 @@
 package com.alex.android.git.presentation
 
-import androidx.lifecycle.*
-import com.alex.android.git.data.Event
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
+import androidx.lifecycle.viewModelScope
 import com.alex.android.git.data.combineWith
-import com.alex.android.git.data.converters.toBriefInfo
-import com.alex.android.git.data.converters.toOtherInfo
 import com.alex.android.git.data.mapNotNull
 import com.alex.android.git.data.model.BriefInfo
 import com.alex.android.git.data.model.OtherInfo
-import com.alex.android.git.data.model.User
-import com.alex.android.git.data.model.UserDb
-import com.alex.android.git.network.Result
+import com.example.network.Result
 import com.alex.android.git.interactor.UsersInteractor
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

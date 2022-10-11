@@ -1,8 +1,8 @@
-package com.alex.android.git.data.model
+package com.example.network.model
 
 import com.squareup.moshi.Json
 
-data class User(
+data class UserResponse(
     @Json(name = "login")
     val login: String? = null,
     @Json(name = "id")

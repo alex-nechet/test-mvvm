@@ -15,8 +15,6 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "BASE_URL", '"https://api.github.com/"')
-        buildConfigField("String", "TOKEN", '"TOKEN"')
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -57,6 +55,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':network')
     implementation source.kotlin.stdlib
     implementation source.kotlin.coroutines
     implementation source.androidx.appcompat
@@ -66,9 +65,6 @@ dependencies {
     implementation source.androidx.recycler
     implementation source.androidx.paging
     implementation source.google.material
-    implementation source.retrofit.core
-    implementation source.retrofit.converter_moshi
-    implementation source.okhttp.logging
     implementation source.koin.core
     implementation source.koin.android
     implementation source.room.runtime
@@ -78,11 +74,7 @@ dependencies {
     implementation source.androidx.navigation_fragment
     implementation source.androidx.navigation_ui
     implementation source.androidx.swiperefresh
-    implementation source.moshi.core
-    implementation source.moshi.adapters
     implementation source.coil
-    kapt source.moshi.codegen
-
     testImplementation source.koin.test
     testImplementation source.testing.junit
     testImplementation source.testing.mockito
