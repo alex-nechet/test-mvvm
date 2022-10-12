@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.paging.ExperimentalPagingApi
-import com.alex.android.git.data.model.BriefInfo
+import com.alex.android.git.interactor.model.BriefInfo
 import com.alex.android.git.databinding.FragmentListBinding
 import com.alex.android.git.presentation.ListViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel

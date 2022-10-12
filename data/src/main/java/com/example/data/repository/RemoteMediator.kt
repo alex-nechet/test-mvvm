@@ -1,16 +1,14 @@
-package com.alex.android.git.repository
+package com.example.data.repository
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
-import coil.network.HttpException
-import com.alex.android.git.data.converters.toDb
-import com.alex.android.git.data.model.UserDb
+import com.example.data.converters.toDb
 import com.example.network.ApiProvider
-import com.alex.android.git.repository.db.AppDatabase
-import java.io.IOException
+import com.example.data.db.AppDatabase
+import com.example.data.db.model.UserDb
 
 private const val START_PAGE_INDEX = 0L
 
@@ -30,7 +28,7 @@ class RemoteMediator(
             else -> pageKeyData as Long
         }
 
-        try {
+        return try {
             val response = apiProvider.getUsers(page)
             val isEndOfList = response.isNullOrEmpty()
             appDatabase.withTransaction {
@@ -40,12 +38,9 @@ class RemoteMediator(
 
                 appDatabase.usersDao().insertAll(response.map { user -> user.toDb() })
             }
-
-            return MediatorResult.Success(endOfPaginationReached = isEndOfList)
-        } catch (exception: IOException) {
-            return MediatorResult.Error(exception)
-        } catch (exception: HttpException) {
-            return MediatorResult.Error(exception)
+            MediatorResult.Success(endOfPaginationReached = isEndOfList)
+        } catch (exception: Exception) {
+            MediatorResult.Error(exception)
         }
     }
 
@@ -58,13 +53,13 @@ class RemoteMediator(
             LoadType.APPEND -> {
                 val remoteKeys = getLastRemoteKey(state)
                 remoteKeys
-                    ?: return MediatorResult.Success(endOfPaginationReached = remoteKeys != null)
+                    ?: return MediatorResult.Success(endOfPaginationReached = true)
 
             }
             LoadType.PREPEND -> {
                 val remoteKeys = getFirstRemoteKey(state)
                 remoteKeys
-                    ?: return MediatorResult.Success(endOfPaginationReached = remoteKeys != null)
+                    ?: return MediatorResult.Success(endOfPaginationReached = true)
             }
         }
     }

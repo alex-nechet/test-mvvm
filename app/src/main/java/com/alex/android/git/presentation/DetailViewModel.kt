@@ -7,10 +7,10 @@ import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.alex.android.git.data.combineWith
 import com.alex.android.git.data.mapNotNull
-import com.alex.android.git.data.model.BriefInfo
-import com.alex.android.git.data.model.OtherInfo
-import com.example.network.Result
+import com.alex.android.git.interactor.State
+import com.alex.android.git.interactor.model.OtherInfo
 import com.alex.android.git.interactor.UsersInteractor
+import com.alex.android.git.interactor.model.BriefInfo
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -19,21 +19,26 @@ class DetailViewModel(
     private val userId: Long
 ) : ViewModel() {
 
-    private val _headerInfo = MutableLiveData<Result<BriefInfo>>()
-    val headerInfo: LiveData<BriefInfo> = _headerInfo.mapNotNull { it.data }
+    private val _headerInfo = MutableLiveData<BriefInfo>()
+    val headerInfo: LiveData<BriefInfo> = _headerInfo
 
-    private val _bodyInfo = MutableLiveData<Result<OtherInfo>>()
-    val bodyInfo: LiveData<OtherInfo> = _bodyInfo.mapNotNull { it.data }
+    private val _bodyInfo = MutableLiveData<State<OtherInfo>>()
+    val bodyInfo: LiveData<OtherInfo> = _bodyInfo.map { state ->
+        when (state) {
+            is State.Success -> state.data
+            else -> null
+        }
+    }
+        .mapNotNull { it }
 
-    val loading = _bodyInfo.map { it is Result.Loading }
+    val loading = _bodyInfo.map { it is State.Loading }
 
     val error = _bodyInfo.combineWith(_headerInfo)
-        .map { it.first is Result.Error || it.second is Result.Error }
+        .map { it.first is State.Error }
 
     val errorMessage = _headerInfo.combineWith(_bodyInfo).map {
-        when {
-            it.first is Result.Error -> it.first as Result.Error
-            it.second is Result.Error -> it.second as Result.Error
+        when (it.second) {
+            is State.Error -> it.second as State.Error
             else -> null
         }
     }
@@ -47,11 +52,11 @@ class DetailViewModel(
         }
     }
 
-        fun fetchAdvancedDetails() {
-            viewModelScope.launch {
-                repository.getAdvancedUserDetails(userId).collectLatest {
-                    _bodyInfo.postValue(it)
-                }
+    fun fetchAdvancedDetails() {
+        viewModelScope.launch {
+            repository.getAdvancedUserDetails(userId).collectLatest {
+                _bodyInfo.postValue(it)
             }
         }
+    }
 }

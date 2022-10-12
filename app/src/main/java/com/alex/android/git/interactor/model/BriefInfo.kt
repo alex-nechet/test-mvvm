@@ -1,4 +1,4 @@
-package com.alex.android.git.data.model
+package com.alex.android.git.interactor.model
 
 data class BriefInfo (
     val login: String,

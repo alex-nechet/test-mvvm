@@ -1,8 +1,13 @@
-package com.alex.android.git.repository.db
+package com.example.data.db
 
 import androidx.paging.PagingSource
-import androidx.room.*
-import com.alex.android.git.data.model.UserDb
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import com.example.data.db.model.UserDb
+import kotlinx.coroutines.flow.Flow
+
 
 @Dao
 interface UsersDao {
@@ -11,7 +16,7 @@ interface UsersDao {
      fun getAll():  PagingSource<Int, UserDb>?
 
     @Query("SELECT * FROM users WHERE id = :id LIMIT 1")
-     fun getUser(id: Long) : UserDb
+     fun getUser(id: Long) : Flow<UserDb>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
      fun insertAll(users: List<UserDb>)

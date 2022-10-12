@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="com.alex.android.git.data.model.BriefInfo" />
+            type="com.alex.android.git.interactor.model.BriefInfo" />
 
         <variable
             name="date"

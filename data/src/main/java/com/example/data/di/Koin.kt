@@ -1,14 +1,16 @@
-package com.alex.android.git.repository
+package com.example.data.di
 
 import androidx.room.Room
-import com.alex.android.git.repository.db.AppDatabase
+import com.example.data.db.AppDatabase
+import com.example.data.repository.UserRepository
+import com.example.data.repository.UsersRepositoryImpl
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 object Koin {
 
     val repositoryModule = module {
-        single { UsersRepository(get(), get()) }
+        single<UserRepository> { UsersRepositoryImpl(get(), get()) }
     }
 
     val databaseModule = module {

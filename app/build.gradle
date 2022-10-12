@@ -56,6 +56,8 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':network')
+    implementation project(':data')
+
     implementation source.kotlin.stdlib
     implementation source.kotlin.coroutines
     implementation source.androidx.appcompat
@@ -67,10 +69,7 @@ dependencies {
     implementation source.google.material
     implementation source.koin.core
     implementation source.koin.android
-    implementation source.room.runtime
-    implementation source.room.ktx
-    implementation source.room.paging
-    kapt source.room.compiler
+
     implementation source.androidx.navigation_fragment
     implementation source.androidx.navigation_ui
     implementation source.androidx.swiperefresh

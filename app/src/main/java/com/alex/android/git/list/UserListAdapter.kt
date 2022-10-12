@@ -6,11 +6,11 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.alex.android.git.R
-import com.alex.android.git.data.converters.toBriefInfo
+import com.alex.android.git.interactor.converters.toBriefInfo
 
-import com.alex.android.git.data.model.BriefInfo
-import com.alex.android.git.data.model.UserDb
 import com.alex.android.git.databinding.ItemListBinding
+import com.alex.android.git.interactor.model.BriefInfo
+import com.example.data.db.model.UserDb
 
 
 class UserListAdapter(

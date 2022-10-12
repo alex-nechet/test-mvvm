@@ -1,9 +1,10 @@
 package com.alex.android.git
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.alex.android.git.data.model.OtherInfo
 import com.alex.android.git.interactor.UsersInteractor
 import com.alex.android.git.presentation.DetailViewModel
+import com.alex.android.git.interactor.State
+import com.alex.android.git.interactor.model.OtherInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
@@ -56,7 +57,7 @@ class DetailsTest {
         runBlocking {
             whenever(mockedInteractor.getAdvancedUserDetails(MOCK_MOVIE_ID))
                 .thenReturn(
-                    flow { emit(com.example.network.Result.Success<OtherInfo>(null)) }
+                    flow { emit(State.Success<OtherInfo>(null)) }
                 )
 
             viewModel.fetchAdvancedDetails()
@@ -69,7 +70,7 @@ class DetailsTest {
     fun `if interactor returns error should have error state`() = runBlockingTest {
         whenever(mockedInteractor.getAdvancedUserDetails(MOCK_MOVIE_ID))
             .thenReturn(
-                flow { emit(com.example.network.Result.Error<OtherInfo>(TEST_MESSAGE)) }
+                flow { emit(State.Error<OtherInfo>(TEST_MESSAGE)) }
             )
         viewModel.fetchAdvancedDetails()
         viewModel.error.observeForever { assert(it) }
@@ -83,7 +84,7 @@ class DetailsTest {
     fun `if iteractor returns loading should have loading state`() = runBlockingTest {
         whenever(mockedInteractor.getAdvancedUserDetails(MOCK_MOVIE_ID))
             .thenReturn(
-                flow { emit(com.example.network.Result.Loading<OtherInfo>()) }
+                flow { emit(State.Loading<OtherInfo>()) }
             )
         viewModel.fetchAdvancedDetails()
         viewModel.error.observeForever { assertFalse { it } }

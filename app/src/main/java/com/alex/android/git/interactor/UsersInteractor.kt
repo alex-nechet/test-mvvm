@@ -2,44 +2,43 @@ package com.alex.android.git.interactor
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingData
-import com.alex.android.git.data.converters.toBriefInfo
-import com.alex.android.git.data.converters.toOtherInfo
-import com.alex.android.git.data.model.BriefInfo
-import com.alex.android.git.data.model.OtherInfo
-import com.alex.android.git.data.model.UserDb
-import com.example.network.Result
-import com.alex.android.git.repository.UsersRepository
-import kotlinx.coroutines.flow.*
+import com.alex.android.git.interactor.model.BriefInfo
+import com.alex.android.git.interactor.model.OtherInfo
+import com.alex.android.git.interactor.converters.toBriefInfo
+import com.alex.android.git.interactor.converters.toOtherInfo
+import com.example.data.db.model.UserDb
+import com.example.data.repository.UserRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 
 interface UsersInteractor {
     @ExperimentalPagingApi
     fun getUsers(): Flow<PagingData<UserDb>>
 
-    suspend fun getBriefUserDetails(userId: Long): Flow<Result<BriefInfo>>
+    fun getBriefUserDetails(userId: Long): Flow<BriefInfo>
 
-    suspend fun getAdvancedUserDetails(userId: Long): Flow<Result<OtherInfo>>
+    fun getAdvancedUserDetails(userId: Long): Flow<State<OtherInfo>>
 }
 
-class UsersInteractorImpl(private val repository: UsersRepository) : UsersInteractor {
-    @ExperimentalPagingApi
-    override fun getUsers() = repository.fetchUsers()
+class UsersInteractorImpl(private val repository: UserRepository) : UsersInteractor {
 
-    override suspend fun getBriefUserDetails(userId: Long) =
-        repository.fetchDetails(userId).map { result ->
-            when (result) {
-                is Result.Success<UserDb> -> Result.Success(result.data?.toBriefInfo())
-                is Result.Error<UserDb> -> Result.Error(result.msg, result.cause)
-                is Result.Loading<UserDb> -> Result.Loading()
-            }
-        }
+    private val coroutineContext = Dispatchers.IO
 
-    override suspend fun getAdvancedUserDetails(userId: Long) =
-        repository.fetchUser(userId).map { result ->
-            when (result) {
-                is Result.Success -> Result.Success(result.data?.toOtherInfo())
-                is Result.Error -> Result.Error(result.msg, result.cause)
-                is Result.Loading -> Result.Loading()
-            }
-        }
+    @OptIn(ExperimentalPagingApi::class)
+    override fun getUsers() = repository.fetchUsers().flow.flowOn(coroutineContext)
+
+    override fun getBriefUserDetails(userId: Long) =
+        repository.fetchDetails(userId).map { it.toBriefInfo() }.flowOn(coroutineContext)
+
+    override fun getAdvancedUserDetails(userId: Long): Flow<State<OtherInfo>> = flow<State<OtherInfo>> {
+        emit(State.Loading())
+        val result = repository.fetchUser(userId).map { it?.toOtherInfo() }
+        result.onFailure { emit(State.Error<OtherInfo>(it.message)) }
+            .onSuccess { emit(State.Success(it)) }
+    }.flowOn(coroutineContext)
+
 
 }
