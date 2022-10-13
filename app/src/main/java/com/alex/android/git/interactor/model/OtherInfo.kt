@@ -10,4 +10,17 @@ data class OtherInfo(
     val followers: String,
     val following: String,
     val createdAt: String
-)
+) {
+    companion object {
+        val EMPTY = OtherInfo(
+            company = "",
+            location = "",
+            email = "",
+            bio = "",
+            twitterUsername = "",
+            followers = "",
+            following = "",
+            createdAt = ""
+        )
+    }
+}

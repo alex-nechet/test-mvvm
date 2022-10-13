@@ -1,4 +1,4 @@
-package com.alex.android.git.interactor
+package com.alex.android.git.interactor.model
 
 sealed interface State<out T> {
     data class Success<T>(val data: T?) : State<T>

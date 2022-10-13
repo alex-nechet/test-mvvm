@@ -2,7 +2,7 @@ package com.alex.android.git
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.paging.ExperimentalPagingApi
-import com.alex.android.git.interactor.UsersInteractor
+import com.alex.android.git.interactor.AllUsersInteractor
 import com.alex.android.git.presentation.ListViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -30,7 +30,7 @@ class ListTest {
     private val testDispatcher = TestCoroutineDispatcher()
 
     @Mock
-    lateinit var mockedInteractor: UsersInteractor
+    lateinit var mockedInteractor: AllUsersInteractor
 
     lateinit var viewModel: ListViewModel
 

@@ -7,15 +7,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.alex.android.git.R
 import com.alex.android.git.interactor.converters.toBriefInfo
-
 import com.alex.android.git.databinding.ItemListBinding
 import com.alex.android.git.interactor.model.BriefInfo
-import com.example.data.db.model.UserDb
+import com.alex.android.git.interactor.model.User
 
 
 class UserListAdapter(
     private val listener: OnItemClickListener?
-) : PagingDataAdapter<UserDb, UserListAdapter.UserViewHolder>(MovieDiffCallback()) {
+) : PagingDataAdapter<User, UserListAdapter.UserViewHolder>(MovieDiffCallback()) {
 
     interface OnItemClickListener {
         fun onItemClick(movie: BriefInfo?)
@@ -51,12 +50,12 @@ class UserListAdapter(
         }
     }
 
-    class MovieDiffCallback : DiffUtil.ItemCallback<UserDb>() {
-        override fun areItemsTheSame(oldItem: UserDb, newItem: UserDb): Boolean {
+    class MovieDiffCallback : DiffUtil.ItemCallback<User>() {
+        override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: UserDb, newItem: UserDb): Boolean {
+        override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {
             return oldItem == newItem
         }
     }

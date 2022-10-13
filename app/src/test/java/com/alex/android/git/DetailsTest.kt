@@ -1,9 +1,9 @@
 package com.alex.android.git
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.alex.android.git.interactor.UsersInteractor
+import com.alex.android.git.interactor.AllUsersInteractor
 import com.alex.android.git.presentation.DetailViewModel
-import com.alex.android.git.interactor.State
+import com.alex.android.git.interactor.model.State
 import com.alex.android.git.interactor.model.OtherInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -36,7 +36,7 @@ class DetailsTest {
     private val testDispatcher = TestCoroutineDispatcher()
 
     @Mock
-    lateinit var mockedInteractor: UsersInteractor
+    lateinit var mockedInteractor: AllUsersInteractor
 
     lateinit var viewModel: DetailViewModel
 

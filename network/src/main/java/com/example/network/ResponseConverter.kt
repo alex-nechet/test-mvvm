@@ -12,8 +12,10 @@ class ResponseConverter(private val retrofit: Retrofit) {
                 result.isSuccessful -> return Result.success(result.body())
                 else -> {
                     val errorResponse = result.parseError(retrofit)
+                    val code = result.code()
+                    val message = errorResponse?.message ?: "Unknown Error"
                     Result.failure(
-                        Throwable(message = errorResponse?.status_message ?: "Unknown Error")
+                        Throwable(message = "Response code:${code} $message")
                     )
                 }
             }
@@ -23,8 +25,7 @@ class ResponseConverter(private val retrofit: Retrofit) {
         }
     }
 
-    data class Error(val status_code: Int = 0, val status_message: String? = null)
-
+    data class Error(val message: String? = null)
 }
 
 fun Response<*>.parseError(retrofit: Retrofit): ResponseConverter.Error? {
@@ -32,6 +33,7 @@ fun Response<*>.parseError(retrofit: Retrofit): ResponseConverter.Error? {
         ResponseConverter.Error::class.java,
         arrayOfNulls(0)
     )
+
     return try {
         converter.convert(this.errorBody() ?: return ResponseConverter.Error())
     } catch (e: IOException) {

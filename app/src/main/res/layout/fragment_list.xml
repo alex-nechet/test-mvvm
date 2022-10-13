@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <data>
-
-        <variable
-            name="viewModel"
-            type="com.alex.android.git.presentation.ListViewModel" />
-    </data>
-
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -19,19 +10,17 @@
             android:id="@+id/list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:visibility="@{!viewModel.loading}" />
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         <ProgressBar
+            android:id="@+id/progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            app:visibility="@{viewModel.loading}" />
+            android:layout_gravity="center" />
 
         <include
-            layout="@layout/layout_error"
-            app:errorText="@{viewModel.errorMessage}"
-            app:visibility="@{viewModel.error}" />
+            android:id="@+id/error"
+            layout="@layout/layout_error" />
 
     </FrameLayout>
 </layout>

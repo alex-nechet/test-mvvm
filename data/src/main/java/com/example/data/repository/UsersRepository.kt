@@ -3,13 +3,11 @@ package com.example.data.repository
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import com.example.data.RemoteMediator
 import com.example.data.db.AppDatabase
 import com.example.data.db.model.UserDb
 import com.example.network.ApiProvider
 import com.example.network.model.UserResponse
 import kotlinx.coroutines.flow.Flow
-
 
 private const val PAGE_SIZE = 30
 

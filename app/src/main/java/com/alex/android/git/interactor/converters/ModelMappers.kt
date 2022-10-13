@@ -3,6 +3,7 @@ package com.alex.android.git.interactor.converters
 
 import com.alex.android.git.interactor.model.BriefInfo
 import com.alex.android.git.interactor.model.OtherInfo
+import com.alex.android.git.interactor.model.User
 import com.example.data.db.model.UserDb
 import com.example.network.model.UserResponse
 
@@ -26,6 +27,13 @@ fun UserResponse.toDb(): UserDb = UserDb(
         type = type.orEmpty(),
         siteAdmin = siteAdmin ?: false
     )
+
+fun User.toBriefInfo() = BriefInfo(
+    id = id,
+    login = login,
+    avatarUrl = avatarUrl,
+    url = url
+)
 
 fun UserDb.toBriefInfo() = BriefInfo(
     id = id,

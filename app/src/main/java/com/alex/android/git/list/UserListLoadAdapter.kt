@@ -28,10 +28,7 @@ class UserListLoadAdapter(
             txtErrorMessage.text = loadState.error.localizedMessage
         }
 
-        btnRetry.setOnClickListener {
-            retry.invoke()
-        }
-
+        btnRetry.setOnClickListener { retry.invoke() }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, loadState: LoadState): LoadStateViewHolder {
@@ -41,5 +38,5 @@ class UserListLoadAdapter(
         )
     }
 
-    class LoadStateViewHolder(private val view: View) : RecyclerView.ViewHolder(view)
+    class LoadStateViewHolder(view: View) : RecyclerView.ViewHolder(view)
 }
