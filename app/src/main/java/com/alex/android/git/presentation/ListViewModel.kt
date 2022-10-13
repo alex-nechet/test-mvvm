@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.cachedIn
-import com.alex.android.git.interactor.AllUsersInteractor
+import com.example.domain.AllUsersInteractor
 
 @ExperimentalPagingApi
 class ListViewModel(private val interactor: AllUsersInteractor) : ViewModel() {

@@ -1,4 +1,4 @@
-package com.alex.android.git.interactor.model
+package com.example.domain.model
 
 
 data class OtherInfo(

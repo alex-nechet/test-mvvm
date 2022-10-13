@@ -57,6 +57,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':network')
     implementation project(':data')
+    implementation project(':domain')
 
     implementation source.kotlin.stdlib
     implementation source.kotlin.coroutines
@@ -69,11 +70,11 @@ dependencies {
     implementation source.google.material
     implementation source.koin.core
     implementation source.koin.android
-
     implementation source.androidx.navigation_fragment
     implementation source.androidx.navigation_ui
     implementation source.androidx.swiperefresh
     implementation source.coil
+    
     testImplementation source.koin.test
     testImplementation source.testing.junit
     testImplementation source.testing.mockito

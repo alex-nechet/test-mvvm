@@ -6,7 +6,7 @@ plugins {
 apply plugin: "kotlin-android-extensions"
 
 android {
-    namespace 'com.example.network'
+    namespace 'com.example.domain'
     compileSdkVersion buildConfig.compileSdk
 
     defaultConfig {
@@ -15,8 +15,6 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
-        buildConfigField("String", "BASE_URL", '"https://api.github.com/"')
-        buildConfigField("String", "TOKEN", '"TOKEN"')
     }
 
     buildTypes {
@@ -35,12 +33,9 @@ android {
 }
 
 dependencies {
-    implementation source.retrofit.core
-    implementation source.retrofit.converter_moshi
-    implementation source.okhttp.logging
+    implementation project(':data')
     implementation source.koin.core
     implementation source.koin.android
-    implementation source.moshi.core
-    implementation source.moshi.adapters
-    kapt source.moshi.codegen
+    implementation source.kotlin.coroutines
+    implementation source.androidx.paging
 }

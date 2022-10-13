@@ -3,10 +3,11 @@ package com.example.data.repository
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
+import com.example.data.converters.toUserData
 import com.example.data.db.AppDatabase
+import com.example.data.repository.model.UserData
 import com.example.data.db.model.UserDb
 import com.example.network.ApiProvider
-import com.example.network.model.UserResponse
 import kotlinx.coroutines.flow.Flow
 
 private const val PAGE_SIZE = 30
@@ -17,7 +18,7 @@ interface UserRepository {
 
     fun fetchDetails(userId: Long): Flow<UserDb>
 
-    suspend fun fetchUser(userId: Long): Result<UserResponse?>
+    suspend fun fetchUser(userId: Long): Result<UserData?>
 }
 
 class UsersRepositoryImpl(
@@ -44,7 +45,7 @@ class UsersRepositoryImpl(
 
     override fun fetchDetails(userId: Long) = local.usersDao().getUser(userId)
 
-    override suspend fun fetchUser(userId: Long) = remote.getDetails(userId)
+    override suspend fun fetchUser(userId: Long) = remote.getDetails(userId).map { it?.toUserData() }
 
 }
 

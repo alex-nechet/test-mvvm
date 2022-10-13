@@ -12,8 +12,8 @@ import com.alex.android.git.binding.setImageUrl
 import com.alex.android.git.databinding.FragmentDetailBinding
 import com.alex.android.git.interactor.model.State
 import com.alex.android.git.interactor.model.BriefInfo
-import com.alex.android.git.interactor.model.OtherInfo
 import com.alex.android.git.presentation.DetailViewModel
+import com.example.domain.model.OtherInfo
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf

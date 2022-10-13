@@ -5,7 +5,7 @@
     <data>
         <variable
             name="bodyInfo"
-            type="com.alex.android.git.interactor.model.OtherInfo" />
+            type="com.example.domain.model.OtherInfo" />
     </data>
 
     <androidx.core.widget.NestedScrollView

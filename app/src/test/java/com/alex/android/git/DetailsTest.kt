@@ -3,7 +3,6 @@ package com.alex.android.git
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.alex.android.git.interactor.AllUsersInteractor
 import com.alex.android.git.presentation.DetailViewModel
-import com.alex.android.git.interactor.model.State
 import com.alex.android.git.interactor.model.OtherInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

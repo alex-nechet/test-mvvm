@@ -1,11 +1,11 @@
 package com.alex.android.git.presentation
 
 import androidx.lifecycle.ViewModel
-import com.alex.android.git.interactor.UserDetailsIteractor
+import com.example.domain.UserDetailsInteractor
 
 
 class DetailViewModel(
-    private val interactor: UserDetailsIteractor,
+    private val interactor: UserDetailsInteractor,
     private val userId: Long
 ) : ViewModel() {
 
