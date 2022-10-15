@@ -17,6 +17,8 @@ import androidx.paging.PagingData
 import com.alex.android.git.interactor.model.BriefInfo
 import com.alex.android.git.interactor.model.User
 import com.example.list.databinding.FragmentListBinding
+import com.example.shared.navigation.Destination
+import com.example.shared.navigation.navigateTo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
@@ -30,14 +32,7 @@ class ListFragment : Fragment() {
     private val viewModel: ListViewModel by viewModel()
     private lateinit var binding: FragmentListBinding
 
-    private val movieAdapterListener = object : UserListAdapter.OnItemClickListener {
-        override fun onItemClick(movie: BriefInfo?) {
-            val request = Uri.parse("androidApp://details/${movie?.id}")
-            findNavController().navigate(request)
-        }
-    }
-
-    private val userAdapter = UserListAdapter(movieAdapterListener)
+    private val userAdapter = UserListAdapter { navigateTo(Destination.Details(it.id)) }
     private val adapter =
         userAdapter.withLoadStateFooter(UserListLoadAdapter { userAdapter.retry() })
 

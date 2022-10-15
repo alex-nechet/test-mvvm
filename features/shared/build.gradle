@@ -40,5 +40,6 @@ android {
 dependencies {
     implementation source.androidx.appcompat
     implementation source.androidx.core
+    implementation source.androidx.navigation_fragment
     implementation source.coil
 }

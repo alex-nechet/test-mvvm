@@ -12,12 +12,9 @@ import com.example.list.databinding.ItemListBinding
 
 
 class UserListAdapter(
-    private val listener: OnItemClickListener?
+    private val action: (movie: BriefInfo) -> Unit
 ) : PagingDataAdapter<User, UserListAdapter.UserViewHolder>(MovieDiffCallback()) {
 
-    interface OnItemClickListener {
-        fun onItemClick(movie: BriefInfo?)
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -28,22 +25,19 @@ class UserListAdapter(
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         val movie = getItem(position) ?: return
-        holder.bind(movie.toBriefInfo(), listener)
+        holder.bind(movie.toBriefInfo(), action)
     }
 
     class UserViewHolder(
         private val binding: ItemListBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-
-        fun bind(user: BriefInfo, listener: OnItemClickListener?) {
+        fun bind(user: BriefInfo, action: (movie: BriefInfo) -> Unit) {
             binding.item = user
             itemView.setOnClickListener {
                 // Triggers click upwards to the adapter on click
-                if (listener != null) {
-                    if (layoutPosition != RecyclerView.NO_POSITION) {
-                        listener.onItemClick(user)
-                    }
+                if (layoutPosition != RecyclerView.NO_POSITION) {
+                    action.invoke(user)
                 }
             }
         }
