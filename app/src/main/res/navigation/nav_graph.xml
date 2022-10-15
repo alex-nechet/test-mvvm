@@ -3,29 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/listFragment">
+    app:startDestination="@id/list_nav_graph">
 
-    <fragment
-        android:id="@+id/listFragment"
-        android:name="com.alex.android.git.list.ListFragment"
-        android:label="ListFragmetn"
-        tools:layout="@layout/fragment_list">
-
-        <action
-            android:id="@+id/openDetails"
-            app:destination="@id/detailFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/detailFragment"
-        android:name="com.alex.android.git.detail.DetailFragment"
-        android:label="DetailFragment"
-        tools:layout="@layout/fragment_detail">
-
-        <argument
-            android:name="movieId"
-            app:argType="long"
-            app:nullable="false" />
-    </fragment>
+    <include app:graph="@navigation/list_nav_graph" />
+    <include app:graph="@navigation/details_nav_graph"/>
 
 </navigation>

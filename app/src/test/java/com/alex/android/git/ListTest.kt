@@ -3,7 +3,7 @@ package com.alex.android.git
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.paging.ExperimentalPagingApi
 import com.alex.android.git.interactor.AllUsersInteractor
-import com.alex.android.git.presentation.ListViewModel
+import com.example.list.ListViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
@@ -32,7 +32,7 @@ class ListTest {
     @Mock
     lateinit var mockedInteractor: AllUsersInteractor
 
-    lateinit var viewModel: ListViewModel
+    lateinit var viewModel: com.example.list.ListViewModel
 
     @After
     fun tearDown() {
@@ -43,7 +43,7 @@ class ListTest {
     @Before
     fun before() {
         Dispatchers.setMain(testDispatcher)
-        viewModel = ListViewModel(mockedInteractor)
+        viewModel = com.example.list.ListViewModel(mockedInteractor)
     }
 
     @Test

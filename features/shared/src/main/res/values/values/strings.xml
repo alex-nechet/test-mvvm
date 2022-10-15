@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Git</string>
+    <string name="retry">Retry</string>
+    <string name="unknown_error">Unknown error</string>
+    <string name="share">Share</string>
+    <string name="email">Email</string>
+    <string name="following">Following</string>
+    <string name="followers">Followers</string>
+    <string name="twitter">Twitter</string>
+    <string name="company">Company</string>
+    <string name="location">Location</string>
+    <string name="about_me">About Me</string>
+
+</resources>

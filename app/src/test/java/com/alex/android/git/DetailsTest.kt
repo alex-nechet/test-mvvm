@@ -2,7 +2,7 @@ package com.alex.android.git
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.alex.android.git.interactor.AllUsersInteractor
-import com.alex.android.git.presentation.DetailViewModel
+import com.example.details.DetailViewModel
 import com.alex.android.git.interactor.model.OtherInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -37,7 +37,7 @@ class DetailsTest {
     @Mock
     lateinit var mockedInteractor: AllUsersInteractor
 
-    lateinit var viewModel: DetailViewModel
+    lateinit var viewModel: com.example.details.DetailViewModel
 
     @After
     fun tearDown() {
@@ -48,7 +48,7 @@ class DetailsTest {
     @Before
     fun before() {
         Dispatchers.setMain(testDispatcher)
-        viewModel = DetailViewModel(mockedInteractor, MOCK_MOVIE_ID)
+        viewModel = com.example.details.DetailViewModel(mockedInteractor, MOCK_MOVIE_ID)
     }
 
     @Test
