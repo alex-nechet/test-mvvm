@@ -41,15 +41,4 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':domain')
     implementation project(':features:shared')
-    implementation source.kotlin.stdlib
-    implementation source.kotlin.coroutines
-    implementation source.androidx.appcompat
-    implementation source.androidx.core
-    implementation source.androidx.navigation_fragment
-    implementation source.koin.core
-    implementation source.koin.android
-    implementation source.androidx.constraint
-    implementation source.androidx.lifecycle
-    implementation source.google.material
-    implementation source.coil
 }

@@ -61,18 +61,6 @@ dependencies {
     implementation project(':features:list')
     implementation project(':features:details')
 
-
-    implementation source.kotlin.stdlib
-    implementation source.kotlin.coroutines
-    implementation source.androidx.appcompat
-    implementation source.androidx.core
-    implementation source.androidx.paging
-
-    implementation source.koin.core
-    implementation source.koin.android
-    implementation source.androidx.navigation_fragment
-    implementation source.androidx.navigation_ui
-
     testImplementation source.koin.test
     testImplementation source.testing.junit
     testImplementation source.testing.mockito
