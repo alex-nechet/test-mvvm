@@ -3,7 +3,6 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
 }
-apply plugin: "kotlin-android-extensions"
 
 android {
     compileSdkVersion buildConfig.compileSdk
@@ -50,6 +49,7 @@ android {
     buildFeatures {
         dataBinding true
     }
+    namespace 'com.alex.android.git'
 }
 
 dependencies {

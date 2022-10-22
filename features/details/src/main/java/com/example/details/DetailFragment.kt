@@ -8,11 +8,12 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
-import com.example.shared.binding.setImageUrl
+import com.example.shared.extensions.setImageUrl
 import com.alex.android.git.interactor.model.State
-import com.alex.android.git.interactor.model.BriefInfo
+import com.example.domain.model.BriefInfo
 import com.example.details.databinding.FragmentDetailBinding
 import com.example.domain.model.OtherInfo
+import com.example.shared.databinding.LayoutErrorBinding
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -37,7 +38,6 @@ class DetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.lifecycleOwner = viewLifecycleOwner
         if (savedInstanceState == null) {
             fetchData()
         }
@@ -59,22 +59,25 @@ class DetailFragment : Fragment() {
         headerImage.setImageUrl(data.avatarUrl)
     }
 
-    private fun setAdvancedDetails(state: State<OtherInfo>) = with(binding) {
-        header.isVisible = state !is State.Loading
-        detailsContainer.isVisible = state !is State.Loading
-        error.errorText.isVisible = state is State.Error
-        loading.isVisible = state is State.Loading
+    private fun setAdvancedDetails(state: State<OtherInfo>) {
 
-        when (state) {
-            is State.Error -> error.errorText.text = state.msg.orEmpty()
-            is State.Loading -> error.errorText.text = ""
-            is State.Success -> {
-                error.errorText.text = ""
-                val data = state.data
-                detailsContainer.isVisible = data != null
-                //using databinding here just to display that i can work with it too
-                bodyInfo = data
+        with(binding){
+            header.isVisible = state !is State.Loading
+            detailsContainer.isVisible = state !is State.Loading
+            loading.isVisible = state is State.Loading
+            error.errorText.isVisible = state is State.Error
+            when (state) {
+                is State.Error -> error.errorText.text = state.msg.orEmpty()
+                is State.Loading -> error.errorText.text = ""
+                is State.Success -> {
+                    error.errorText.text = ""
+                    val data = state.data
+                   binding.detailsContainer.isVisible = data != null
+                    //using databinding here just to display that i can work with it too
+//                bodyInfo = data
+                }
             }
         }
     }
+
 }

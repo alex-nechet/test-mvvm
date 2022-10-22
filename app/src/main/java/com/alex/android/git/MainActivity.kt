@@ -1,6 +1,5 @@
 package com.alex.android.git
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 

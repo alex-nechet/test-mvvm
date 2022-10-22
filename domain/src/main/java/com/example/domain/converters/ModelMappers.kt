@@ -1,7 +1,7 @@
 package com.example.domain.converters
 
 
-import com.alex.android.git.interactor.model.BriefInfo
+import com.example.domain.model.BriefInfo
 import com.example.domain.model.OtherInfo
 import com.alex.android.git.interactor.model.User
 import com.example.data.db.model.UserDb

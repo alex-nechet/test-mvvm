@@ -5,10 +5,11 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.alex.android.git.interactor.model.BriefInfo
+import com.example.domain.model.BriefInfo
 import com.alex.android.git.interactor.model.User
 import com.example.domain.converters.toBriefInfo
 import com.example.list.databinding.ItemListBinding
+import com.example.shared.extensions.setImageUrl
 
 
 class UserListAdapter(
@@ -33,11 +34,14 @@ class UserListAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(user: BriefInfo, action: (movie: BriefInfo) -> Unit) {
-            binding.item = user
-            itemView.setOnClickListener {
-                // Triggers click upwards to the adapter on click
-                if (layoutPosition != RecyclerView.NO_POSITION) {
-                    action.invoke(user)
+            with(binding) {
+                binding.title.text = user.login
+                binding.image.setImageUrl(imageUrl = user.avatarUrl, centerCrop = true)
+                itemView.setOnClickListener {
+                    // Triggers click upwards to the adapter on click
+                    if (layoutPosition != RecyclerView.NO_POSITION) {
+                        action.invoke(user)
+                    }
                 }
             }
         }

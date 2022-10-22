@@ -1,20 +1,10 @@
-package com.example.shared.binding
+package com.example.shared.extensions
 
-import android.view.View
 import android.widget.ImageView
-import androidx.databinding.BindingAdapter
 import coil.load
-//import com.example.shared.R
 import coil.transform.CircleCropTransformation
 import com.example.shared.R
 
-
-@BindingAdapter(value = ["visibility"])
-fun View.setVisibility(isVisible: Boolean) {
-    this.visibility = if (isVisible) View.VISIBLE else View.GONE
-}
-
-@BindingAdapter(value = ["src", "centerCrop"], requireAll = false)
 fun ImageView.setImageUrl(imageUrl: String?, centerCrop: Boolean=false) {
     this.load(imageUrl) {
         crossfade(true)

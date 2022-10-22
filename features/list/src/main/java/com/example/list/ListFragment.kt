@@ -1,20 +1,15 @@
 package com.example.list
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavDeepLinkRequest
-import androidx.navigation.NavDirections
-import androidx.navigation.fragment.findNavController
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingData
-import com.alex.android.git.interactor.model.BriefInfo
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.alex.android.git.interactor.model.User
 import com.example.list.databinding.FragmentListBinding
 import com.example.shared.navigation.Destination
@@ -30,6 +25,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class ListFragment : Fragment() {
 
     private val viewModel: ListViewModel by viewModel()
+
     private lateinit var binding: FragmentListBinding
 
     private val userAdapter = UserListAdapter { navigateTo(Destination.Details(it.id)) }
@@ -47,8 +43,10 @@ class ListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.lifecycleOwner = viewLifecycleOwner
-        binding.list.adapter = adapter
+        with(binding) {
+            list.layoutManager = LinearLayoutManager(context)
+            list.adapter = adapter
+        }
         if (savedInstanceState == null) {
             viewLifecycleOwner.lifecycleScope.launchWhenStarted {
                 viewModel.fetchUsers().handleStateChanges()

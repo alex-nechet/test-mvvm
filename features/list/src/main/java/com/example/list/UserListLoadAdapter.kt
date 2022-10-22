@@ -1,42 +1,48 @@
 package com.example.list
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.paging.LoadState
 import androidx.paging.LoadStateAdapter
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_list.view.progress
-import kotlinx.android.synthetic.main.item_load_state.view.*
+import com.example.list.databinding.ItemLoadStateBinding
 
 class UserListLoadAdapter(
     private val retry: () -> Unit
 ) : LoadStateAdapter<UserListLoadAdapter.LoadStateViewHolder>() {
 
-    override fun onBindViewHolder(holder: LoadStateViewHolder, loadState: LoadState) {
+    override fun onBindViewHolder(
+        holder: LoadStateViewHolder,
+        loadState: LoadState
+    ) = holder.bind(loadState, retry)
 
-        val progress = holder.itemView.progress
-        val btnRetry = holder.itemView.retry
-        val txtErrorMessage = holder.itemView.errorMessage
-
-        btnRetry.isVisible = loadState !is LoadState.Loading
-        txtErrorMessage.isVisible = loadState !is LoadState.Loading
-        progress.isVisible = loadState is LoadState.Loading
-
-        if (loadState is LoadState.Error){
-            txtErrorMessage.text = loadState.error.localizedMessage
-        }
-
-        btnRetry.setOnClickListener { retry.invoke() }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, loadState: LoadState): LoadStateViewHolder {
-        return LoadStateViewHolder(
-            LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_load_state, parent, false)
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        loadState: LoadState
+    ): LoadStateViewHolder {
+        val binding = ItemLoadStateBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
         )
+        return LoadStateViewHolder(binding)
     }
 
-    class LoadStateViewHolder(view: View) : RecyclerView.ViewHolder(view)
+    class LoadStateViewHolder(
+        private val binding: ItemLoadStateBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(loadState: LoadState, retryAction: () -> Unit) {
+            with(binding) {
+                retry.isVisible = loadState !is LoadState.Loading
+                errorMessage.isVisible = loadState !is LoadState.Loading
+                progress.isVisible = loadState is LoadState.Loading
+
+                if (loadState is LoadState.Error) {
+                    errorMessage.text = loadState.error.localizedMessage
+                }
+                retry.setOnClickListener { retryAction.invoke() }
+            }
+        }
+    }
 }
