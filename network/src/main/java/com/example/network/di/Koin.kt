@@ -11,8 +11,6 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-private const val API_KEY = "api_key"
-
 object Koin {
     val networkModule = module {
         /**

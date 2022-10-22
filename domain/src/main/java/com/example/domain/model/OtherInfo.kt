@@ -1,6 +1,5 @@
 package com.example.domain.model
 
-
 data class OtherInfo(
     val company: String,
     val location: String,
@@ -11,3 +10,4 @@ data class OtherInfo(
     val following: String,
     val createdAt: String
 )
+

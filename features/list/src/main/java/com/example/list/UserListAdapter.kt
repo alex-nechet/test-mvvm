@@ -14,7 +14,7 @@ import com.example.shared.extensions.setImageUrl
 
 class UserListAdapter(
     private val action: (movie: BriefInfo) -> Unit
-) : PagingDataAdapter<User, UserListAdapter.UserViewHolder>(MovieDiffCallback()) {
+) : PagingDataAdapter<User, UserListAdapter.UserViewHolder>(UsersDiffCallback()) {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
@@ -47,7 +47,7 @@ class UserListAdapter(
         }
     }
 
-    class MovieDiffCallback : DiffUtil.ItemCallback<User>() {
+    class UsersDiffCallback : DiffUtil.ItemCallback<User>() {
         override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
             return oldItem.id == newItem.id
         }

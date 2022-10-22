@@ -8,12 +8,11 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.shared.extensions.setImageUrl
 import com.alex.android.git.interactor.model.State
 import com.example.domain.model.BriefInfo
 import com.example.details.databinding.FragmentDetailBinding
-import com.example.domain.model.OtherInfo
-import com.example.shared.databinding.LayoutErrorBinding
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -26,6 +25,7 @@ class DetailFragment : Fragment() {
     private val viewModel: DetailViewModel by viewModel { parametersOf(args.movieId) }
 
     private lateinit var binding: FragmentDetailBinding
+    private val adapter = UserDetailsAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,11 +59,13 @@ class DetailFragment : Fragment() {
         headerImage.setImageUrl(data.avatarUrl)
     }
 
-    private fun setAdvancedDetails(state: State<OtherInfo>) {
+    private fun setAdvancedDetails(state: State<List<Pair<Int, String>>>) {
+        with(binding) {
+            detailsRecyclerView.layoutManager = LinearLayoutManager(context)
+            detailsRecyclerView.adapter = adapter
 
-        with(binding){
             header.isVisible = state !is State.Loading
-            detailsContainer.isVisible = state !is State.Loading
+            detailsRecyclerView.isVisible = state !is State.Loading
             loading.isVisible = state is State.Loading
             error.errorText.isVisible = state is State.Error
             when (state) {
@@ -72,9 +74,8 @@ class DetailFragment : Fragment() {
                 is State.Success -> {
                     error.errorText.text = ""
                     val data = state.data
-                   binding.detailsContainer.isVisible = data != null
-                    //using databinding here just to display that i can work with it too
-//                bodyInfo = data
+                    detailsRecyclerView.isVisible = data != null
+                    adapter.submitList(data)
                 }
             }
         }

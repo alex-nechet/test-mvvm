@@ -70,48 +70,10 @@
             android:minHeight="@dimen/header_image_height"
             android:padding="@dimen/space_16">
 
-            <LinearLayout
-                android:id="@+id/details_container"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/details_recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <!--                    <include-->
-                <!--                        layout="@layout/item_details"-->
-                <!--                        app:header="@{@string/email}"-->
-                <!--                        app:text="@{bodyInfo.email}" />-->
-
-                <!--                    <include-->
-                <!--                        layout="@layout/item_details"-->
-                <!--                        app:header="@{@string/following}"-->
-                <!--                        app:text="@{bodyInfo.following}" />-->
-
-                <!--                    <include-->
-                <!--                        layout="@layout/item_details"-->
-                <!--                        app:header="@{@string/followers}"-->
-                <!--                        app:text="@{bodyInfo.followers}" />-->
-
-                <!--                    <include-->
-                <!--                        layout="@layout/item_details"-->
-                <!--                        app:header="@{@string/twitter}"-->
-                <!--                        app:text="@{bodyInfo.twitterUsername}" />-->
-
-                <!--                    <include-->
-                <!--                        layout="@layout/item_details"-->
-                <!--                        app:header="@{@string/company}"-->
-                <!--                        app:text="@{bodyInfo.company}" />-->
-
-                <!--                    <include-->
-                <!--                        layout="@layout/item_details"-->
-                <!--                        app:header="@{@string/location}"-->
-                <!--                        app:text="@{bodyInfo.location}" />-->
-
-                <!--                    <include-->
-                <!--                        layout="@layout/item_details"-->
-                <!--                        app:header="@{@string/about_me}"-->
-                <!--                        app:text="@{bodyInfo.bio}" />-->
-
-            </LinearLayout>
+                android:layout_height="wrap_content" />
 
             <include
                 android:id="@+id/error"
