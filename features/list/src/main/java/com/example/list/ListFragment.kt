@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.alex.android.git.interactor.model.State
 import com.alex.android.git.interactor.model.User
 import com.example.list.databinding.FragmentListBinding
 import com.example.shared.navigation.Destination
@@ -47,25 +48,37 @@ class ListFragment : Fragment() {
             list.layoutManager = LinearLayoutManager(context)
             list.adapter = adapter
         }
-        if (savedInstanceState == null) {
-            viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-                viewModel.fetchUsers().handleStateChanges()
-                    .collectLatest { userAdapter.submitData(it) }
+        if (savedInstanceState == null) { viewModel.fetchData() }
+        observeData()
+    }
+
+    private fun observeData() {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.data.collectLatest { state ->
+                handleUIState(state)
+                setupData(state)
             }
         }
     }
 
-    private fun Flow<PagingData<User>>.handleStateChanges() = with(binding) {
-        this@handleStateChanges
-            .onStart { progress.isVisible = true }
-            .catch {
-                progress.isVisible = false
-                error.errorText.isVisible = true
-                error.errorText.text = it.message.orEmpty()
+    private suspend fun setupData(state: State<PagingData<User>>) {
+        with(binding) {
+            when (state) {
+                is State.Error -> error.errorText.text = state.msg.orEmpty()
+                is State.Loading -> error.errorText.text = ""
+                is State.Success -> {
+                    error.errorText.text = ""
+                    state.data?.let { userAdapter.submitData(it) }
+                }
             }
-            .onEach {
-                progress.isVisible = false
-                error.errorText.text = ""
-            }
+        }
+    }
+
+    private fun handleUIState(state: State<PagingData<User>>) {
+        with(binding) {
+            progress.isVisible = state is State.Loading
+            error.errorText.isVisible = state is State.Error
+            list.isVisible = state is State.Success
+        }
     }
 }

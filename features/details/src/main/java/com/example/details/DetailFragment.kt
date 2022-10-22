@@ -25,6 +25,7 @@ class DetailFragment : Fragment() {
     private val viewModel: DetailViewModel by viewModel { parametersOf(args.movieId) }
 
     private lateinit var binding: FragmentDetailBinding
+
     private val adapter = UserDetailsAdapter()
 
     override fun onCreateView(
@@ -38,20 +39,22 @@ class DetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (savedInstanceState == null) {
-            fetchData()
-        }
+        binding.detailsRecyclerView.layoutManager = LinearLayoutManager(context)
+        binding.detailsRecyclerView.adapter = adapter
+        if (savedInstanceState == null) { viewModel.fetchData() }
+        observeData()
     }
 
-    private fun fetchData() {
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.fetchHeaderDetails().collectLatest { setBasicDetails(it) }
-        }
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.fetchAdvancedDetails().collectLatest { setAdvancedDetails(it) }
+    private fun observeData() {
+        with(viewLifecycleOwner.lifecycleScope) {
+            launchWhenStarted {
+                viewModel.headerData.collectLatest { data -> data?.let { setBasicDetails(it) } }
+            }
+            launchWhenStarted { viewModel.footerData.collectLatest {
+                binding.handleUIState(it)
+                setAdvancedDetails(it) } }
         }
     }
-
 
     private fun setBasicDetails(data: BriefInfo) = with(binding) {
         url.text = data.url
@@ -61,24 +64,21 @@ class DetailFragment : Fragment() {
 
     private fun setAdvancedDetails(state: State<List<Pair<Int, String>>>) {
         with(binding) {
-            detailsRecyclerView.layoutManager = LinearLayoutManager(context)
-            detailsRecyclerView.adapter = adapter
-
-            header.isVisible = state !is State.Loading
-            detailsRecyclerView.isVisible = state !is State.Loading
-            loading.isVisible = state is State.Loading
-            error.errorText.isVisible = state is State.Error
             when (state) {
                 is State.Error -> error.errorText.text = state.msg.orEmpty()
                 is State.Loading -> error.errorText.text = ""
                 is State.Success -> {
                     error.errorText.text = ""
-                    val data = state.data
-                    detailsRecyclerView.isVisible = data != null
-                    adapter.submitList(data)
+                    adapter.submitList(state.data)
                 }
             }
         }
+    }
+
+    private fun FragmentDetailBinding.handleUIState(state: State<List<Pair<Int, String>>>) {
+        detailsRecyclerView.isVisible = state is State.Success
+        loading.isVisible = state is State.Loading
+        error.errorText.isVisible = state is State.Error
     }
 
 }
