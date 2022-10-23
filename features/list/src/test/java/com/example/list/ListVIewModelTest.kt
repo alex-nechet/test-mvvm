@@ -1,4 +1,4 @@
-package com.alex.android.git
+package com.example.list
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.paging.ExperimentalPagingApi
@@ -6,12 +6,14 @@ import androidx.paging.PagingData
 import app.cash.turbine.test
 import com.alex.android.git.interactor.model.User
 import com.example.domain.AllUsersInteractor
-import com.example.list.ListViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.After
@@ -20,9 +22,10 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
+import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.whenever
-import org.mockito.runners.MockitoJUnitRunner
 import kotlin.test.assertEquals
+
 
 @ExperimentalPagingApi
 @ExperimentalCoroutinesApi
@@ -31,7 +34,7 @@ class ListVIewModelTest {
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    private val testDispatcher = TestCoroutineDispatcher()
+    private val testDispatcher = UnconfinedTestDispatcher()
 
     @Mock
     lateinit var mockedInteractor: AllUsersInteractor
@@ -41,7 +44,6 @@ class ListVIewModelTest {
     @After
     fun tearDown() {
         Dispatchers.resetMain()
-        testDispatcher.cleanupTestCoroutines()
     }
 
     @Before

@@ -5,4 +5,13 @@ data class BriefInfo(
     val id: Long,
     val avatarUrl: String,
     val url: String
-)
+) {
+    companion object {
+        val EMPTY = BriefInfo(
+            login = "",
+            id = 0,
+            avatarUrl = "",
+            url = ""
+        )
+    }
+}

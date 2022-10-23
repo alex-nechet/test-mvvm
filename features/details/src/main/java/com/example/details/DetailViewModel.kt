@@ -10,7 +10,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flatMapMerge
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 
 
@@ -25,12 +28,18 @@ class DetailViewModel(
     private val _footerData = MutableStateFlow<State<List<Pair<Int, String>>>>(State.Loading())
     val footerData = _footerData.asStateFlow()
 
+    @Suppress("UNCHECKED_CAST")
     fun fetchData() {
         viewModelScope.launch(Dispatchers.IO) {
-            fetchHeaderDetails().collectLatest { _headerData.value = it }
-        }
-        viewModelScope.launch(Dispatchers.IO) {
-            fetchAdvancedDetails().collectLatest { _footerData.value = it }
+            merge(fetchHeaderDetails(), fetchAdvancedDetails()).collectLatest { item ->
+                when (item) {
+                    is BriefInfo -> _headerData.value = item
+                    is State<*> -> {
+                        val result =  item as State<List<Pair<Int, String>>>
+                        _footerData.value = result
+                    }
+                }
+            }
         }
     }
 

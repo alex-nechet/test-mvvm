@@ -60,17 +60,4 @@ dependencies {
     implementation project(':features:shared')
     implementation project(':features:list')
     implementation project(':features:details')
-
-    testImplementation source.koin.test
-    testImplementation source.testing.junit
-    testImplementation source.testing.mockito
-    testImplementation source.testing.mokito_kotlin
-    testImplementation source.testing.mokito_inline
-    testImplementation source.testing.core_testing
-    testImplementation source.testing.coroutines_test
-    testImplementation 'app.cash.turbine:turbine:0.12.0'
-
-    androidTestImplementation source.testing.espresso
-
-
 }

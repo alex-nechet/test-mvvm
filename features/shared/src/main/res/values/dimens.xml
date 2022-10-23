@@ -5,6 +5,5 @@
     <dimen name="imageview_height">54dp</dimen>
     <dimen name="header_image_height">256dp</dimen>
 
-
     <dimen name="text_16">16sp</dimen>
 </resources>
