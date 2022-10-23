@@ -8,18 +8,15 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.ExperimentalPagingApi
+import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.alex.android.git.interactor.model.State
 import com.alex.android.git.interactor.model.User
 import com.example.list.databinding.FragmentListBinding
 import com.example.shared.navigation.Destination
 import com.example.shared.navigation.navigateTo
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @ExperimentalPagingApi
@@ -53,32 +50,29 @@ class ListFragment : Fragment() {
     }
 
     private fun observeData() {
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+        viewLifecycleOwner.lifecycleScope.launch {
             viewModel.data.collectLatest { state ->
-                handleUIState(state)
                 setupData(state)
+                handleUIState()
             }
         }
     }
 
-    private suspend fun setupData(state: State<PagingData<User>>) {
-        with(binding) {
-            when (state) {
-                is State.Error -> error.errorText.text = state.msg.orEmpty()
-                is State.Loading -> error.errorText.text = ""
-                is State.Success -> {
-                    error.errorText.text = ""
-                    state.data?.let { userAdapter.submitData(it) }
+    private suspend fun setupData(data: PagingData<User>) {
+       userAdapter.submitData(data)
+    }
+
+    private fun handleUIState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            userAdapter.loadStateFlow.collectLatest { loadStates ->
+                with(binding) {
+                    progress.isVisible = loadStates.refresh is LoadState.Loading
+                    list.isVisible = loadStates.refresh !is LoadState.Loading
+                    //due to limitation of calls error with the code 403 may happen and this will lead
+//                    to error message to pop. Please use api key for proper behaviour. commented out for now
+//                    error.errorText.isVisible = loadStates.refresh is LoadState.Error
                 }
             }
-        }
-    }
-
-    private fun handleUIState(state: State<PagingData<User>>) {
-        with(binding) {
-            progress.isVisible = state is State.Loading
-            error.errorText.isVisible = state is State.Error
-            list.isVisible = state is State.Success
         }
     }
 }

@@ -68,6 +68,9 @@ dependencies {
     testImplementation source.testing.mokito_inline
     testImplementation source.testing.core_testing
     testImplementation source.testing.coroutines_test
+    testImplementation 'app.cash.turbine:turbine:0.12.0'
 
     androidTestImplementation source.testing.espresso
+
+
 }

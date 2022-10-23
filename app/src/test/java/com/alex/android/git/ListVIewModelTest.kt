@@ -2,7 +2,10 @@ package com.alex.android.git
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.paging.ExperimentalPagingApi
-import com.alex.android.git.interactor.AllUsersInteractor
+import androidx.paging.PagingData
+import app.cash.turbine.test
+import com.alex.android.git.interactor.model.User
+import com.example.domain.AllUsersInteractor
 import com.example.list.ListViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -19,11 +22,12 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.kotlin.whenever
 import org.mockito.runners.MockitoJUnitRunner
+import kotlin.test.assertEquals
 
 @ExperimentalPagingApi
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
-class ListTest {
+class ListVIewModelTest {
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
@@ -32,7 +36,7 @@ class ListTest {
     @Mock
     lateinit var mockedInteractor: AllUsersInteractor
 
-    lateinit var viewModel: com.example.list.ListViewModel
+    lateinit var viewModel: ListViewModel
 
     @After
     fun tearDown() {
@@ -43,13 +47,20 @@ class ListTest {
     @Before
     fun before() {
         Dispatchers.setMain(testDispatcher)
-        viewModel = com.example.list.ListViewModel(mockedInteractor)
+        viewModel = ListViewModel(mockedInteractor)
     }
 
     @Test
     fun `if interactor throws error show error state`() = runBlocking {
-        whenever(mockedInteractor.getUsers()).thenReturn(flow { throw java.lang.Exception("test Message") })
-        viewModel.fetchUsers()
-        viewModel.error.observeForever { assert(it) }
+        whenever(mockedInteractor.invoke()).thenReturn(flow { PagingData.empty<User>() })
+        viewModel.fetchData()
+        viewModel.data
+            .onCompletion { println("done") }
+            .onEach { println("$it") }
+            .test {
+                val item = awaitItem()
+                assertEquals(item, PagingData.empty())
+                cancel()
+            }
     }
 }

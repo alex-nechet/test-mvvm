@@ -5,7 +5,7 @@ import coil.load
 import coil.transform.CircleCropTransformation
 import com.example.shared.R
 
-fun ImageView.setImageUrl(imageUrl: String?, centerCrop: Boolean=false) {
+fun ImageView.setImageUrl(imageUrl: String?, centerCrop: Boolean = false) {
     this.load(imageUrl) {
         crossfade(true)
         placeholder(R.drawable.ic_baseline_image_not_supported_24)
