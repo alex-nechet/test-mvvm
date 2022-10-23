@@ -42,7 +42,6 @@ dependencies {
     implementation project(':domain')
     implementation project(':features:shared')
 
-    testImplementation 'app.cash.turbine:turbine:0.12.0'
     testImplementation source.koin.test
     testImplementation source.testing.junit
     testImplementation source.testing.mockito
@@ -50,6 +49,7 @@ dependencies {
     testImplementation source.testing.mokito_inline
     testImplementation source.testing.core_testing
     testImplementation source.testing.coroutines_test
+    testImplementation source.testing.turbine
 
     androidTestImplementation source.testing.espresso
 }
