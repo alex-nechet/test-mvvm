@@ -32,8 +32,8 @@ class UserListAdapter(
 
         fun bind(user: BriefInfo, action: (movie: BriefInfo) -> Unit) {
             with(binding) {
-                binding.title.text = user.login
-                binding.image.setImageUrl(imageUrl = user.avatarUrl, centerCrop = true)
+                title.text = user.name
+                image.setImageUrl(imageUrl = user.avatarUrl, centerCrop = true)
                 itemView.setOnClickListener {
                     // Triggers click upwards to the adapter on click
                     if (layoutPosition != RecyclerView.NO_POSITION) {
