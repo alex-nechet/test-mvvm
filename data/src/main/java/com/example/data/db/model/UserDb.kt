@@ -8,6 +8,7 @@ data class UserDb(
     val login: String,
     @PrimaryKey
     val id: Long,
+    val name: String,
     val nodeId: String,
     val avatarUrl: String,
     val gravatarId: String,

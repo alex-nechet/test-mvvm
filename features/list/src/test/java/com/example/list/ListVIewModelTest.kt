@@ -4,15 +4,14 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingData
 import app.cash.turbine.test
-import com.alex.android.git.interactor.model.User
 import com.example.domain.AllUsersInteractor
+import com.example.domain.model.BriefInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
@@ -54,7 +53,7 @@ class ListVIewModelTest {
 
     @Test
     fun `if interactor throws error show error state`() = runBlocking {
-        whenever(mockedInteractor.invoke()).thenReturn(flow { PagingData.empty<User>() })
+        whenever(mockedInteractor.invoke()).thenReturn(flow { PagingData.empty<BriefInfo>() })
         viewModel.fetchData()
         viewModel.data
             .onCompletion { println("done") }
