@@ -32,6 +32,7 @@ android {
 
 dependencies {
     implementation project(':network')
+    implementation project(':domain')
     implementation source.room.runtime
     implementation source.room.ktx
     implementation source.room.paging

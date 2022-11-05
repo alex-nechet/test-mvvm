@@ -4,9 +4,7 @@ package com.example.domain
 import com.example.domain.model.BriefInfo
 import com.example.domain.model.OtherInfo
 import com.alex.android.git.interactor.model.State
-import com.example.data.repository.UserRepository
-import com.example.domain.converters.toBriefInfo
-import com.example.domain.converters.toOtherInfo
+import com.example.domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -25,12 +23,12 @@ class UserDetailsInteractorImpl(
     private val coroutineContext: CoroutineContext
 ) : UserDetailsInteractor {
 
-    override fun getBriefUserDetails(userId: Long) =
-        repository.fetchDetails(userId).map { it.toBriefInfo() }
+    override fun getBriefUserDetails(userId: Long): Flow<BriefInfo> =
+        repository.fetchBriefDetails(userId)
 
     override fun getAdvancedUserDetails(userId: Long): Flow<State<OtherInfo>> = flow {
         emit(State.Loading())
-        val result = repository.fetchUser(userId).map { it?.toOtherInfo() }
+        val result = repository.fetchUser(userId)
         result.onFailure { emit(State.Error<OtherInfo>(it.message)) }
             .onSuccess { emit(State.Success(it)) }
     }.flowOn(coroutineContext)
