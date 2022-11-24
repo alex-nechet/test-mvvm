@@ -1,19 +1,16 @@
 package com.example.details
 
+import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alex.android.git.interactor.model.State
 import com.example.domain.UserDetailsInteractor
 import com.example.domain.model.BriefInfo
 import com.example.domain.model.OtherInfo
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.flatMapMerge
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.merge
-import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 
 
@@ -25,42 +22,38 @@ class DetailViewModel(
     private val _headerData = MutableStateFlow<BriefInfo?>(null)
     val headerData = _headerData.asStateFlow()
 
-    private val _footerData = MutableStateFlow<State<List<Pair<Int, String>>>>(State.Loading())
+    private val _footerData = MutableStateFlow<State<List<Data>>>(State.Loading())
     val footerData = _footerData.asStateFlow()
 
-    @Suppress("UNCHECKED_CAST")
     fun fetchData() {
-        viewModelScope.launch(Dispatchers.IO) {
-            merge(fetchHeaderDetails(), fetchAdvancedDetails()).collectLatest { item ->
-                when (item) {
-                    is BriefInfo -> _headerData.value = item
-                    is State<*> -> {
-                        val result =  item as State<List<Pair<Int, String>>>
-                        _footerData.value = result
-                    }
-                }
+        viewModelScope.launch {
+            _headerData.value = fetchHeaderDetails()
+            fetchAdvancedDetails().collectLatest { item ->
+                _footerData.value = item
             }
         }
     }
 
-    private fun fetchHeaderDetails() = interactor.getBriefUserDetails(userId)
+    private suspend fun fetchHeaderDetails() = interactor.getBriefUserDetails(userId)
 
     private fun fetchAdvancedDetails() =
         interactor.getAdvancedUserDetails(userId).map { footerState ->
             return@map when (footerState) {
-                is State.Success -> State.Success(footerState.data?.toList())
+                is State.Success -> State.Success(footerState.data?.toData())
                 is State.Error -> State.Error(footerState.msg)
                 is State.Loading -> State.Loading()
             }
         }
 
-    private fun OtherInfo.toList() = listOf(
-        R.string.company to this.company,
-        R.string.location to this.location,
-        R.string.email to this.email,
-        R.string.about_me to this.bio,
-        R.string.twitter to this.twitterUsername,
-        R.string.followers to this.followers,
-        R.string.following to this.following
-    ).filter { it.second.isNotEmpty() }
+    private fun OtherInfo.toData() = listOf(
+        Data(R.string.company, this.company),
+        Data(R.string.location, this.location),
+        Data(R.string.email, this.email),
+        Data(R.string.about_me, this.bio),
+        Data(R.string.twitter, this.twitterUsername),
+        Data(R.string.followers, this.followers),
+        Data(R.string.following, this.following)
+    ).filter { it.text.isNotEmpty() }
 }
+
+data class Data(@StringRes val fieldRes: Int, val text: String)

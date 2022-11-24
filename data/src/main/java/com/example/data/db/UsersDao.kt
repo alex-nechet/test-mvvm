@@ -16,7 +16,7 @@ interface UsersDao {
      fun getAll():  PagingSource<Int, UserDb>?
 
     @Query("SELECT * FROM users WHERE id = :id LIMIT 1")
-     fun getUser(id: Long) : Flow<UserDb>
+     suspend fun getUser(id: Long) : UserDb
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
      fun insertAll(users: List<UserDb>)

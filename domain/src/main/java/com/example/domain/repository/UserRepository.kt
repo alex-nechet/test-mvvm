@@ -10,7 +10,7 @@ interface UserRepository {
     @ExperimentalPagingApi
     fun fetchUsers(): Flow<PagingData<BriefInfo>>
 
-    fun fetchBriefDetails(userId: Long): Flow<BriefInfo>
+    suspend fun fetchBriefDetails(userId: Long): BriefInfo
 
     suspend fun fetchUser(userId: Long): Result<OtherInfo?>
 }

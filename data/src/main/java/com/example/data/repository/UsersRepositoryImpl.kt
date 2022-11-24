@@ -14,6 +14,7 @@ import com.example.network.ApiProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 import kotlin.coroutines.CoroutineContext
 
 private const val PAGE_SIZE = 30
@@ -41,9 +42,9 @@ class UsersRepositoryImpl(
         ).flow.map { pd-> pd.map { it.toBriefInfo() } }.flowOn(coroutineContext)
     }
 
-    override fun fetchBriefDetails(userId: Long) = local.usersDao().getUser(userId)
-        .map { it.toBriefInfo() }
-        .flowOn(coroutineContext)
+    override suspend fun fetchBriefDetails(userId: Long) = withContext(coroutineContext){
+        local.usersDao().getUser(userId).toBriefInfo()
+    }
 
     override suspend fun fetchUser(userId: Long) = remote.getDetails(userId).map { it?.toOtherInfo() }
 

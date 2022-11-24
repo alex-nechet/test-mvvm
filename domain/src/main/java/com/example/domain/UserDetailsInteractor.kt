@@ -13,7 +13,7 @@ import kotlin.coroutines.CoroutineContext
 
 interface UserDetailsInteractor {
 
-    fun getBriefUserDetails(userId: Long): Flow<BriefInfo>
+    suspend fun getBriefUserDetails(userId: Long): BriefInfo
 
     fun getAdvancedUserDetails(userId: Long): Flow<State<OtherInfo>>
 }
@@ -23,7 +23,7 @@ class UserDetailsInteractorImpl(
     private val coroutineContext: CoroutineContext
 ) : UserDetailsInteractor {
 
-    override fun getBriefUserDetails(userId: Long): Flow<BriefInfo> =
+    override suspend fun getBriefUserDetails(userId: Long): BriefInfo =
         repository.fetchBriefDetails(userId)
 
     override fun getAdvancedUserDetails(userId: Long): Flow<State<OtherInfo>> = flow {

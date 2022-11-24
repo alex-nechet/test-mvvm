@@ -21,7 +21,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @ExperimentalPagingApi
 class ListFragment : Fragment() {
-
     private val viewModel: ListViewModel by viewModel()
 
     private lateinit var binding: FragmentListBinding
@@ -45,7 +44,9 @@ class ListFragment : Fragment() {
             list.layoutManager = LinearLayoutManager(context)
             list.adapter = adapter
         }
-        if (savedInstanceState == null) { viewModel.fetchData() }
+        if (savedInstanceState == null) {
+            viewModel.fetchData()
+        }
         observeData()
     }
 
@@ -59,7 +60,7 @@ class ListFragment : Fragment() {
     }
 
     private suspend fun setupData(data: PagingData<BriefInfo>) {
-       userAdapter.submitData(data)
+        userAdapter.submitData(data)
     }
 
     private fun handleUIState() {

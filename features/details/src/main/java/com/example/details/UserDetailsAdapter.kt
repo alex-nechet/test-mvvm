@@ -7,9 +7,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.details.databinding.ItemDetailsBinding
 
-
-class UserDetailsAdapter : ListAdapter<Pair<Int, String>,
-        UserDetailsAdapter.UserViewHolder>(DetailsDiffCallback()) {
+class UserDetailsAdapter :
+    ListAdapter<Data, UserDetailsAdapter.UserViewHolder>(DetailsDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -26,23 +25,16 @@ class UserDetailsAdapter : ListAdapter<Pair<Int, String>,
     class UserViewHolder(
         private val binding: ItemDetailsBinding
     ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(user: Pair<Int, String>) {
+        fun bind(data: Data) {
             with(binding) {
-                header.text = binding.root.context.getText(user.first)
-                text.text = user.second
+                header.text = binding.root.context.getText(data.fieldRes)
+                text.text = data.text
             }
         }
     }
 
-    class DetailsDiffCallback : DiffUtil.ItemCallback<Pair<Int, String>>() {
-        override fun areItemsTheSame(
-            oldItem: Pair<Int, String>,
-            newItem: Pair<Int, String>
-        ) = oldItem == newItem
-
-        override fun areContentsTheSame(
-            oldItem: Pair<Int, String>,
-            newItem: Pair<Int, String>
-        ) = oldItem == newItem
+    class DetailsDiffCallback : DiffUtil.ItemCallback<Data>() {
+        override fun areItemsTheSame(oldItem: Data, newItem: Data) = false
+        override fun areContentsTheSame(oldItem: Data, newItem: Data) = false
     }
 }

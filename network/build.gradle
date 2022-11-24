@@ -25,21 +25,21 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility = buildConfig.javaVersion
+        targetCompatibility = buildConfig.javaVersion
     }
+
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = buildConfig.javaVersion.toString()
     }
 }
 
 dependencies {
-    implementation source.retrofit.core
-    implementation source.retrofit.converter_moshi
-    implementation source.okhttp.logging
-    implementation source.koin.core
-    implementation source.koin.android
-    implementation source.moshi.core
-    implementation source.moshi.adapters
-    kapt source.moshi.codegen
+    implementation libs.retrofit
+    implementation libs.converter.moshi
+    implementation libs.moshi.kotlin
+    implementation libs.koin.core
+    implementation libs.koin.android
+    implementation libs.logging.interceptor
+    kapt libs.moshi.kotlin.codegen
 }

@@ -23,17 +23,17 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility = buildConfig.javaVersion
+        targetCompatibility = buildConfig.javaVersion
     }
+
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = buildConfig.javaVersion.toString()
     }
 }
 
 dependencies {
-    implementation source.koin.core
-    implementation source.koin.android
-    implementation source.kotlin.coroutines
-    implementation source.androidx.paging
+    api libs.paging.runtime.ktx
+    api libs.koin.android
+    api libs.koin.core
 }

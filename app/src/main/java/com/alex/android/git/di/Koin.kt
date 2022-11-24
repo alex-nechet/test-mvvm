@@ -3,10 +3,12 @@ package com.alex.android.git.di
 import androidx.paging.ExperimentalPagingApi
 import com.example.data.di.Koin.dataModule
 import com.example.data.di.Koin.databaseModule
+import com.example.domain.di.IO
 import com.example.domain.di.Koin.domainModule
 import com.example.list.ListViewModel
 import com.example.network.di.Koin.networkModule
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 object Koin {

@@ -68,20 +68,17 @@ class DetailFragment : Fragment() {
         headerImage.setImageUrl(data.avatarUrl)
     }
 
-    private fun setAdvancedDetails(state: State<List<Pair<Int, String>>>) {
+    private fun setAdvancedDetails(state: State<List<Data>>) {
         with(binding) {
             when (state) {
                 is State.Error -> error.errorText.text = state.msg.orEmpty()
-                is State.Loading -> error.errorText.text = ""
-                is State.Success -> {
-                    error.errorText.text = ""
-                    adapter.submitList(state.data)
-                }
+                else -> error.errorText.text = ""
             }
+            if (state is State.Success) adapter.submitList(state.data)
         }
     }
 
-    private fun FragmentDetailBinding.handleUIState(state: State<List<Pair<Int, String>>>) {
+    private fun FragmentDetailBinding.handleUIState(state: State<List<Data>>) {
         detailsRecyclerView.isVisible = state is State.Success
         loading.isVisible = state is State.Loading
         error.errorText.isVisible = state is State.Error

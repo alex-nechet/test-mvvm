@@ -7,7 +7,6 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.domain.AllUsersInteractor
 import com.example.domain.model.BriefInfo
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -22,7 +21,7 @@ class ListViewModel(private val interactor: AllUsersInteractor) : ViewModel() {
     private fun fetchUsers() = interactor.invoke().cachedIn(viewModelScope)
 
     fun fetchData() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             fetchUsers().collectLatest { _data.value = it }
         }
     }

@@ -25,11 +25,12 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility = buildConfig.javaVersion
+        targetCompatibility = buildConfig.javaVersion
     }
+
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = buildConfig.javaVersion.toString()
     }
     buildFeatures {
         viewBinding true
@@ -37,17 +38,10 @@ android {
 }
 
 dependencies {
-    api source.kotlin.stdlib
-    api source.kotlin.coroutines
-    api source.androidx.appcompat
-    api source.androidx.core
-    api source.androidx.navigation_fragment
-    api source.koin.core
-    api source.koin.android
-    api source.androidx.constraint
-    api source.androidx.lifecycle
-    api source.androidx.recycler
-    api source.androidx.paging
-    api source.google.material
-    api source.coil
+    api libs.coil
+    api libs.core.ktx
+    api libs.fragment.ktx
+    api libs.constraintlayout
+    api libs.navigation.fragment.ktx
+    api libs.navigation.ui.ktx
 }
