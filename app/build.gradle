@@ -37,6 +37,7 @@ android {
         }
 
     }
+
     compileOptions {
         sourceCompatibility = buildConfig.javaVersion
         targetCompatibility = buildConfig.javaVersion
@@ -49,6 +50,13 @@ android {
     buildFeatures {
         dataBinding true
     }
+
+    externalNativeBuild {
+        cmake {
+            path "CMakeLists.txt"
+        }
+    }
+
     namespace 'com.alex.android.git'
 }
 

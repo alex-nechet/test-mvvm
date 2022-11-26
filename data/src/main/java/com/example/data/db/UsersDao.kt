@@ -11,16 +11,15 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UsersDao {
-
     @Query("SELECT * FROM users ORDER BY id")
-     fun getAll():  PagingSource<Int, UserDb>?
+      fun getAll():  PagingSource<Int, UserDb>?
 
     @Query("SELECT * FROM users WHERE id = :id LIMIT 1")
      suspend fun getUser(id: Long) : UserDb
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-     fun insertAll(users: List<UserDb>)
+     suspend fun insertAll(users: List<UserDb>)
 
     @Query("DELETE from users")
-     fun deleteAll()
+    suspend fun deleteAll()
 }

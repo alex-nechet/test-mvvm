@@ -30,7 +30,7 @@ class RemoteMediator(
 
         return try {
             val response = apiProvider.getUsers(page)
-            val isEndOfList = response.isNullOrEmpty()
+            val isEndOfList = response.isEmpty()
             appDatabase.withTransaction {
                 if (loadType == LoadType.REFRESH) {
                     appDatabase.usersDao().deleteAll()

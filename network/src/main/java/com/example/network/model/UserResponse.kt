@@ -69,18 +69,3 @@ data class UserResponse(
     @Json(name = "updated_at")
     val updatedAt: String? = null
 )
-
-fun UserResponse.toList(): List<Pair<String, String>>? {
-    val moshi: Moshi = Moshi.Builder().build()
-    val jsonAdapter: JsonAdapter<UserResponse> =
-        moshi.adapter(UserResponse::class.java)
-
-
-    val type = Types.newParameterizedType(
-        MutableMap::class.java,
-        String::class.java,
-        String::class.java
-    )
-    val adapter: JsonAdapter<Map<String, String>> = moshi.adapter(type)
-    return adapter.fromJson(jsonAdapter.toJson(this))?.toList()
-}
