@@ -8,10 +8,7 @@ import org.koin.dsl.module
 
 const val IO = "io"
 
-object Koin {
-    val domainModule = module {
-        single { AllUsersInteractor(get()) }
-        single<UserDetailsInteractor> { UserDetailsInteractorImpl(get(), get(named(IO))) }
-    }
-
+val domainModule = module {
+    single { AllUsersInteractor(get()) }
+    single<UserDetailsInteractor> { UserDetailsInteractorImpl(get(), get(named(IO))) }
 }

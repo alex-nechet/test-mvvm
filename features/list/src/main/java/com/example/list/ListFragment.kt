@@ -7,9 +7,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.paging.ExperimentalPagingApi
-import androidx.paging.LoadState
-import androidx.paging.PagingData
+import androidx.paging.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.domain.model.BriefInfo
 import com.example.list.databinding.FragmentListBinding
@@ -26,8 +24,9 @@ class ListFragment : Fragment() {
     private lateinit var binding: FragmentListBinding
 
     private val userAdapter = UserListAdapter { navigateTo(Destination.Details(it.id)) }
-    private val adapter =
-        userAdapter.withLoadStateFooter(UserListLoadAdapter { userAdapter.retry() })
+    private val adapter = userAdapter.withLoadStateFooter(
+        footer = UserListLoadAdapter { userAdapter.retry() }
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,15 +38,14 @@ class ListFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         with(binding) {
             list.layoutManager = LinearLayoutManager(context)
             list.adapter = adapter
         }
         if (savedInstanceState == null) {
             viewModel.fetchData()
+            observeData()
         }
-        observeData()
     }
 
     private fun observeData() {
@@ -69,9 +67,14 @@ class ListFragment : Fragment() {
                 with(binding) {
                     progress.isVisible = loadStates.refresh is LoadState.Loading
                     list.isVisible = loadStates.refresh !is LoadState.Loading
-                    //due to limitation of calls error with the code 403 may happen and this will lead
+
+                    error.errorText.isVisible = loadStates.refresh is LoadState.Error
+//                    due to limitation of calls error with the code 403 may happen and this will lead
 //                    to error message to pop. Please use api key for proper behaviour. commented out for now
-//                    error.errorText.isVisible = loadStates.refresh is LoadState.Error
+                    if (loadStates.refresh is LoadState.Error && userAdapter.itemCount == 0) {
+                        val errorState: LoadState.Error = loadStates.refresh as LoadState.Error
+                        error.errorText.text = errorState.error.message
+                    }
                 }
             }
         }

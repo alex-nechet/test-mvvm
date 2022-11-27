@@ -1,10 +1,12 @@
 package com.example.network.di
 
+import com.example.network.ErrorParser
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import com.example.network.ApiProvider
 import com.example.network.GitApi
 import com.example.network.ResponseConverter
+import com.example.network.remote.UserRemoteDataSource
+import com.example.network.remote.UserRemoteDataSourceImpl
 import com.squareup.moshi.JsonAdapter
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -29,6 +31,10 @@ object Koin {
     private external fun baseUrl(): String
 
     private external fun token(): String
+
+    val userRemoteDataSource = module {
+        factory<UserRemoteDataSource> { UserRemoteDataSourceImpl(get(), get()) }
+    }
 
     fun networkModule(debuggable: Boolean) = module {
         /**
@@ -60,9 +66,9 @@ object Koin {
         factory { Moshi.Builder().add(get()).build() }
         factory<JsonAdapter.Factory> { KotlinJsonAdapterFactory() }
         factory<Converter.Factory> { MoshiConverterFactory.create(get()) }
-        factory { ResponseConverter(get()) }
+        single { ErrorParser(get()) }
+        single { ResponseConverter(get()) }
         factory { get<Retrofit>().create(GitApi::class.java) }
-        factory { ApiProvider(get(), get()) }
 
         single<Retrofit> {
             Retrofit.Builder()
@@ -71,6 +77,5 @@ object Koin {
                 .client(get())
                 .build()
         }
-
     }
 }

@@ -4,44 +4,50 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
-import androidx.room.withTransaction
-import com.example.data.converters.toDb
-import com.example.network.ApiProvider
-import com.example.data.db.AppDatabase
+import com.example.data.datasource.local.UserLocalDataSource
 import com.example.data.db.model.UserDb
+import com.example.data.mappers.toDb
+import com.example.network.remote.UserRemoteDataSource
 
 private const val START_PAGE_INDEX = 0L
 
 @ExperimentalPagingApi
-class RemoteMediator(
-    private val apiProvider: ApiProvider,
-    private val appDatabase: AppDatabase
+internal class RemoteMediator(
+    private val userRemoteDataSource: UserRemoteDataSource,
+    private val userLocalDataSource: UserLocalDataSource
 ) : RemoteMediator<Int, UserDb>() {
 
     override suspend fun load(
         loadType: LoadType,
         state: PagingState<Int, UserDb>
     ): MediatorResult {
-
         val page = when (val pageKeyData = getKeyPageData(loadType, state)) {
             is MediatorResult.Success -> return pageKeyData
             else -> pageKeyData as Long
         }
 
-        return try {
-            val response = apiProvider.getUsers(page)
-            val isEndOfList = response.isEmpty()
-            appDatabase.withTransaction {
-                if (loadType == LoadType.REFRESH) {
-                    appDatabase.usersDao().deleteAll()
-                }
+        return prepareMediatorResult(page, loadType)
+    }
 
-                appDatabase.usersDao().insertAll(response.map { user -> user.toDb() })
+    private suspend fun prepareMediatorResult(
+        page: Long,
+        loadType: LoadType
+    ): MediatorResult {
+        val response = userRemoteDataSource.getUsers(page)
+        var result: MediatorResult = MediatorResult.Error(Throwable("No result"))
+        response.onSuccess {
+            val res = it ?: emptyList()
+            val isEndOfList = res.isEmpty()
+            if (loadType == LoadType.REFRESH) {
+                userLocalDataSource.deleteAll()
             }
-            MediatorResult.Success(endOfPaginationReached = isEndOfList)
-        } catch (exception: Exception) {
-            MediatorResult.Error(exception)
+            userLocalDataSource.insertAll(res.map { user -> user.toDb() })
+            result = MediatorResult.Success(endOfPaginationReached = isEndOfList)
         }
+            .onFailure {
+                result = MediatorResult.Error(it)
+            }
+        return result
     }
 
     private fun getKeyPageData(loadType: LoadType, state: PagingState<Int, UserDb>): Any {

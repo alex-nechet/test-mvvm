@@ -8,7 +8,7 @@ import retrofit2.http.Query
 
 interface GitApi {
     @GET("users")
-    suspend fun getUsers(@Query("since") lastUserId: Long): List<UserResponse>
+    suspend fun getUsers(@Query("since") lastUserId: Long): Response<List<UserResponse>>
 
     @GET("users/{userid}")
     suspend fun getDetails(@Path("userid") userId: Long): Response<UserResponse>

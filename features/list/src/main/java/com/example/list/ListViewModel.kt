@@ -20,9 +20,8 @@ class ListViewModel(private val interactor: AllUsersInteractor) : ViewModel() {
 
     private fun fetchUsers() = interactor.invoke().cachedIn(viewModelScope)
 
-    fun fetchData() {
-        viewModelScope.launch {
-            fetchUsers().collectLatest { _data.value = it }
-        }
+    fun fetchData() = viewModelScope.launch {
+        fetchUsers().collectLatest { _data.value = it }
     }
+
 }

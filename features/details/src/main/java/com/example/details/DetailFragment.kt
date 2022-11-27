@@ -10,17 +10,18 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.shared.extensions.setImageUrl
-import com.alex.android.git.interactor.model.State
+import com.example.domain.model.State
 import com.example.domain.model.BriefInfo
 import com.example.details.databinding.FragmentDetailBinding
+import com.example.details.mappers.toErrorResource
+import com.example.details.model.Data
+import com.example.details.model.UserDetails
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-
 class DetailFragment : Fragment() {
-
     private val args: DetailFragmentArgs by navArgs()
 
     private val viewModel: DetailViewModel by viewModel { parametersOf(args.movieId) }
@@ -49,16 +50,10 @@ class DetailFragment : Fragment() {
     }
 
     private fun observeData() {
-        with(viewLifecycleOwner.lifecycleScope) {
-            launch {
-                viewModel.headerData.collectLatest { data -> data?.let { setBasicDetails(it) } }
-            }
-            launch {
-                viewModel.footerData.collectLatest {
-                    binding.handleUIState(it)
-                    setAdvancedDetails(it)
+        viewLifecycleOwner.lifecycleScope.launch {
+                viewModel.userDetails.collectLatest {
+                    setDetails(it)
                 }
-            }
         }
     }
 
@@ -68,13 +63,19 @@ class DetailFragment : Fragment() {
         headerImage.setImageUrl(data.avatarUrl)
     }
 
-    private fun setAdvancedDetails(state: State<List<Data>>) {
+    private fun setFooterDetails(data: List<Data>) = adapter.submitList(data)
+
+    private fun setDetails(state: State<UserDetails>) {
         with(binding) {
+            loading.isVisible = state is State.Loading
             when (state) {
-                is State.Error -> error.errorText.text = state.msg.orEmpty()
+                is State.Error -> error.errorText.text = getString(state.errorType.toErrorResource())
                 else -> error.errorText.text = ""
             }
-            if (state is State.Success) adapter.submitList(state.data)
+            if (state is State.Success)  {
+                setBasicDetails(state.data.headerInfo)
+                setFooterDetails(state.data.footerInfo)
+            }
         }
     }
 

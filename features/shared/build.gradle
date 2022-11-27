@@ -44,4 +44,5 @@ dependencies {
     api libs.constraintlayout
     api libs.navigation.fragment.ktx
     api libs.navigation.ui.ktx
+    api libs.koin.android
 }

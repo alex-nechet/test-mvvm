@@ -5,12 +5,12 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
-import com.example.data.converters.toBriefInfo
-import com.example.data.converters.toOtherInfo
-import com.example.data.db.AppDatabase
-import com.example.domain.model.BriefInfo
+import com.example.data.datasource.local.UserLocalDataSource
+import com.example.data.mappers.toDb
+import com.example.data.mappers.toUser
+import com.example.domain.model.User
 import com.example.domain.repository.UserRepository
-import com.example.network.ApiProvider
+import com.example.network.remote.UserRemoteDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
@@ -20,15 +20,15 @@ import kotlin.coroutines.CoroutineContext
 private const val PAGE_SIZE = 30
 
 class UsersRepositoryImpl(
-    private val remote: ApiProvider,
-    private val local: AppDatabase,
+    private val remote: UserRemoteDataSource,
+    private val local: UserLocalDataSource,
     private val coroutineContext: CoroutineContext
 ) : UserRepository {
 
     @ExperimentalPagingApi
-    override fun fetchUsers(): Flow<PagingData<BriefInfo>> {
+    override fun fetchUsers(): Flow<PagingData<User>> {
         val pagingSourceFactory = {
-            local.usersDao().getAll()
+            local.getAllUsers()
                 ?: throw IllegalStateException("Database is not initialized")
         }
 
@@ -39,14 +39,19 @@ class UsersRepositoryImpl(
             ),
             pagingSourceFactory = pagingSourceFactory,
             remoteMediator = RemoteMediator(remote, local)
-        ).flow.map { pd-> pd.map { it.toBriefInfo() } }.flowOn(coroutineContext)
+        ).flow.map { pd -> pd.map { it.toUser() } }.flowOn(coroutineContext)
     }
 
-    override suspend fun fetchBriefDetails(userId: Long) = withContext(coroutineContext){
-        local.usersDao().getUser(userId).toBriefInfo()
+    override suspend fun fetchUser(userId: Long): Result<User?> = withContext(coroutineContext) {
+        when (val localUser = local.getUserDetails(userId)) {
+            null -> {
+                val remoteUser = remote.getDetails(userId)
+                remoteUser.onSuccess { user -> user?.let { local.insertAll(listOf(it.toDb())) } }
+                remoteUser.map { it?.toUser() }
+            }
+            else -> Result.success(localUser.toUser())
+        }
     }
-
-    override suspend fun fetchUser(userId: Long) = remote.getDetails(userId).map { it?.toOtherInfo() }
 
 }
 
