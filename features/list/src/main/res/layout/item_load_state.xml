@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="16dp">
+    android:padding="@dimen/space_16">
 
     <TextView
         android:id="@+id/errorMessage"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
+        android:padding="@dimen/space_8"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textColor="@color/design_default_color_error"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -21,8 +22,8 @@
 
     <ProgressBar
         android:id="@+id/progress"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         app:layout_constraintBottom_toBottomOf="parent"

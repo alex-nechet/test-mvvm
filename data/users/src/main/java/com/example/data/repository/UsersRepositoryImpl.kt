@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.CoroutineContext
 
-private const val PAGE_SIZE = 30
+private const val PAGE_SIZE = 10
 
 class UsersRepositoryImpl(
     private val remote: UserRemoteDataSource,
@@ -35,11 +35,15 @@ class UsersRepositoryImpl(
         return Pager(
             config = PagingConfig(
                 pageSize = PAGE_SIZE,
-                enablePlaceholders = false
+                enablePlaceholders = false,
+                prefetchDistance = PAGE_SIZE,
+                initialLoadSize = PAGE_SIZE
             ),
             pagingSourceFactory = pagingSourceFactory,
             remoteMediator = RemoteMediator(remote, local)
-        ).flow.map { pd -> pd.map { it.toUser() } }.flowOn(coroutineContext)
+        ).flow.map { pd ->
+            pd.map { it.toUser() }
+        }.flowOn(coroutineContext)
     }
 
     override suspend fun fetchUser(userId: Long): Result<User?> = withContext(coroutineContext) {

@@ -34,8 +34,8 @@ class UserListLoadAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(loadState: LoadState, retryAction: () -> Unit) {
             with(binding) {
-                retry.isVisible = loadState !is LoadState.Loading
-                errorMessage.isVisible = loadState !is LoadState.Loading
+                retry.isVisible = loadState is LoadState.Error
+                errorMessage.isVisible = loadState is LoadState.Error
                 progress.isVisible = loadState is LoadState.Loading
 
                 if (loadState is LoadState.Error) {

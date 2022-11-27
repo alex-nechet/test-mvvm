@@ -9,6 +9,6 @@ import org.koin.dsl.module
 const val IO = "io"
 
 val domainModule = module {
-    single { AllUsersInteractor(get()) }
-    single<UserDetailsInteractor> { UserDetailsInteractorImpl(get(), get(named(IO))) }
+    factory { AllUsersInteractor(get()) }
+    factory <UserDetailsInteractor> { UserDetailsInteractorImpl(get(), get(named(IO))) }
 }

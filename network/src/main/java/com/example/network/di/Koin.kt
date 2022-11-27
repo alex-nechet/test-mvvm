@@ -28,9 +28,9 @@ object Koin {
         System.loadLibrary(LIB_SECRET_NAME);
     }
 
-    private external fun baseUrl(): String
+    private external fun baseUrlJNI(): String
 
-    private external fun token(): String
+    private external fun tokenJNI(): String
 
     val userRemoteDataSource = module {
         factory<UserRemoteDataSource> { UserRemoteDataSourceImpl(get(), get()) }
@@ -43,7 +43,7 @@ object Koin {
         factory(named(AUTH_INTERCEPTOR)) {
             Interceptor { chain ->
                 val requestBuilder = chain.request().newBuilder()
-                requestBuilder.addHeader(HEADER_AUTHORIZATION, "token ${token()}")
+                requestBuilder.addHeader(HEADER_AUTHORIZATION, "token ${tokenJNI()}")
                 chain.proceed(requestBuilder.build())
             }
         }
@@ -57,7 +57,8 @@ object Koin {
             if (debuggable) {
                 builder.addInterceptor(get<Interceptor>(named(LOGGING_INTERCEPTOR)))
             }
-            if (token().isNotEmpty()) {
+            //for testing purposes token can be empty
+            if (tokenJNI().isNotEmpty()) {
                 builder.addInterceptor(get<Interceptor>(named(AUTH_INTERCEPTOR)))
             }
             builder.build()
@@ -72,7 +73,7 @@ object Koin {
 
         single<Retrofit> {
             Retrofit.Builder()
-                .baseUrl(baseUrl())
+                .baseUrl(baseUrlJNI())
                 .addConverterFactory(get())
                 .client(get())
                 .build()

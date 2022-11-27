@@ -13,7 +13,6 @@ interface UserLocalDataSource {
 }
 
 class UserLocalDataSourceImpl(private val appDatabase: AppDatabase) : UserLocalDataSource {
-
     private val dao = appDatabase.usersDao()
 
     override fun getAllUsers() = dao.getAll()

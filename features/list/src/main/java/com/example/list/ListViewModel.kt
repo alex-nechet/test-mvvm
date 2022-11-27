@@ -10,6 +10,7 @@ import com.example.domain.model.BriefInfo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
 @ExperimentalPagingApi
@@ -21,7 +22,7 @@ class ListViewModel(private val interactor: AllUsersInteractor) : ViewModel() {
     private fun fetchUsers() = interactor.invoke().cachedIn(viewModelScope)
 
     fun fetchData() = viewModelScope.launch {
-        fetchUsers().collectLatest { _data.value = it }
+        fetchUsers().distinctUntilChanged().collectLatest { _data.value = it }
     }
 
 }

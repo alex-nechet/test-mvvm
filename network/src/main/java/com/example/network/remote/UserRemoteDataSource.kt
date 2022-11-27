@@ -13,7 +13,9 @@ class UserRemoteDataSourceImpl(
     private val api: GitApi,
     private val responseConverter: ResponseConverter
 ) : UserRemoteDataSource {
-    override suspend fun getUsers(page: Long) = responseConverter.toResult { api.getUsers(page) }
+    override suspend fun getUsers(page: Long) = responseConverter.toResult {
+        api.getUsers(page)
+    }
 
     override suspend fun getDetails(userId: Long) =
         responseConverter.toResult { api.getDetails(userId) }

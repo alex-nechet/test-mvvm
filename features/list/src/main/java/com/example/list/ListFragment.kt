@@ -1,6 +1,7 @@
 package com.example.list
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,8 +25,9 @@ class ListFragment : Fragment() {
     private lateinit var binding: FragmentListBinding
 
     private val userAdapter = UserListAdapter { navigateTo(Destination.Details(it.id)) }
+    private val loadStateFooter = UserListLoadAdapter { userAdapter.retry() }
     private val adapter = userAdapter.withLoadStateFooter(
-        footer = UserListLoadAdapter { userAdapter.retry() }
+        footer = loadStateFooter
     )
 
     override fun onCreateView(
@@ -44,15 +46,18 @@ class ListFragment : Fragment() {
         }
         if (savedInstanceState == null) {
             viewModel.fetchData()
-            observeData()
         }
+//        userAdapter.addLoadStateListener {
+//            loadStateFooter.loadState = it.refresh
+//        }
+        observeData()
     }
 
     private fun observeData() {
-        viewLifecycleOwner.lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.data.collectLatest { state ->
                 setupData(state)
-                handleUIState()
+//                handleUIState()
             }
         }
     }
@@ -64,9 +69,10 @@ class ListFragment : Fragment() {
     private fun handleUIState() {
         viewLifecycleOwner.lifecycleScope.launch {
             userAdapter.loadStateFlow.collectLatest { loadStates ->
+                loadStateFooter.loadState = loadStates.refresh
                 with(binding) {
                     progress.isVisible = loadStates.refresh is LoadState.Loading
-                    list.isVisible = loadStates.refresh !is LoadState.Loading
+                    list.isVisible = loadStates.refresh is LoadState.NotLoading
 
                     error.errorText.isVisible = loadStates.refresh is LoadState.Error
 //                    due to limitation of calls error with the code 403 may happen and this will lead
