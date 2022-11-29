@@ -10,14 +10,14 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.shared.extensions.setImageUrl
-import com.example.domain.model.State
 import com.example.domain.model.BriefInfo
 import com.example.details.databinding.FragmentDetailBinding
 import com.example.details.mappers.toErrorResource
 import com.example.details.model.Data
 import com.example.details.model.UserDetails
+import com.example.domain.common.model.State
+import com.example.domain.common.model.map
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -26,7 +26,9 @@ class DetailFragment : Fragment() {
 
     private val viewModel: DetailViewModel by viewModel { parametersOf(args.movieId) }
 
-    private lateinit var binding: FragmentDetailBinding
+    private var _binding: FragmentDetailBinding? = null
+    private val binding: FragmentDetailBinding
+        get() = _binding!!
 
     private val adapter = UserDetailsAdapter()
 
@@ -34,9 +36,9 @@ class DetailFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentDetailBinding.inflate(inflater, container, false)
-        return binding.root
+    ): View? {
+        _binding = FragmentDetailBinding.inflate(inflater, container, false)
+        return _binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -50,10 +52,10 @@ class DetailFragment : Fragment() {
     }
 
     private fun observeData() {
-        viewLifecycleOwner.lifecycleScope.launch {
-                viewModel.userDetails.collectLatest {
-                    setDetails(it)
-                }
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.userDetails.collectLatest {
+                setDetails(it)
+            }
         }
     }
 
@@ -69,12 +71,14 @@ class DetailFragment : Fragment() {
         with(binding) {
             loading.isVisible = state is State.Loading
             when (state) {
-                is State.Error -> error.errorText.text = getString(state.errorType.toErrorResource())
+                is State.Error -> error.errorText.text =
+                    getString(state.errorType.toErrorResource())
                 else -> error.errorText.text = ""
             }
-            if (state is State.Success)  {
+            if (state is State.Success) {
                 setBasicDetails(state.data.headerInfo)
                 setFooterDetails(state.data.footerInfo)
+                handleUIState(state.map { it.footerInfo })
             }
         }
     }
@@ -85,4 +89,8 @@ class DetailFragment : Fragment() {
         error.errorText.isVisible = state is State.Error
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

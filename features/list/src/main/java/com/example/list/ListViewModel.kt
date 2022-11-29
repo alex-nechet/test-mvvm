@@ -19,7 +19,7 @@ class ListViewModel(private val interactor: AllUsersInteractor) : ViewModel() {
     private val _data = MutableStateFlow<PagingData<BriefInfo>>(PagingData.empty())
     val data = _data.asStateFlow()
 
-    private fun fetchUsers() = interactor.invoke().cachedIn(viewModelScope)
+     private fun fetchUsers() = interactor.invoke().cachedIn(viewModelScope)
 
     fun fetchData() = viewModelScope.launch {
         fetchUsers().distinctUntilChanged().collectLatest { _data.value = it }

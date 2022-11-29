@@ -62,9 +62,9 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project(':network')
+    implementation project(':data:network')
     implementation project(':data:users')
-    implementation project(':domain')
+    implementation project(':domain:users')
     implementation project(':features:shared')
     implementation project(':features:list')
     implementation project(':features:details')

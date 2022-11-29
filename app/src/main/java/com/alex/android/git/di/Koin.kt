@@ -1,7 +1,7 @@
 package com.alex.android.git.di
 
 import com.alex.android.git.BuildConfig
-import com.example.data.di.userDataModule
+import com.example.users.di.userDataModule
 import com.example.details.di.detailsPresentationModule
 import com.example.domain.di.domainModule
 import com.example.list.di.listPresentationModule

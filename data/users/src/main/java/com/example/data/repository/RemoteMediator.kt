@@ -5,11 +5,11 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
-import com.example.data.datasource.local.UserLocalDataSource
-import com.example.data.db.model.UserDb
-import com.example.data.mappers.toDb
 import com.example.network.model.UserResponse
 import com.example.network.remote.UserRemoteDataSource
+import com.example.users.datasource.local.UserLocalDataSource
+import com.example.users.db.model.UserDb
+import com.example.users.mappers.toDb
 
 private const val START_PAGE_INDEX = 0L
 
@@ -42,15 +42,14 @@ internal class RemoteMediator(
     }
 
     private suspend fun mediatorResult(response: Result<List<UserResponse>?>): MediatorResult {
-        var result: MediatorResult = MediatorResult.Error(Exception("Unknown Error"))
-        response
-            .onSuccess { list ->
+        lateinit var mediatorResult: MediatorResult
+        response.onSuccess { list ->
                 list?.let { nonNullList ->
-                    userLocalDataSource.insertAll(nonNullList.map { it.toDb() })
+                     userLocalDataSource.insertAll(nonNullList.map { it.toDb() })
                 }
-                result = MediatorResult.Success(list.isNullOrEmpty())
+                mediatorResult =  MediatorResult.Success(list.isNullOrEmpty())
             }
-            .onFailure { result = MediatorResult.Error(it) }
-        return result
+            .onFailure { mediatorResult = MediatorResult.Error(it) }
+        return mediatorResult
     }
 }

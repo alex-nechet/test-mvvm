@@ -16,6 +16,6 @@ Java_com_example_network_di_Koin_tokenJNI(
         JNIEnv *env,
         jobject /* this */) {
 //place your token here
-    std::string token = "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";
+    std::string token = "";
     return env->NewStringUTF(token.c_str());
 }

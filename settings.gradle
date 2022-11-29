@@ -5,9 +5,10 @@ plugins {
 
 include ':app'
 rootProject.name='Git'
-include ':network'
-include 'data:users'
-include ':domain'
+include ':data:network'
+include ':data:users'
+include ':domain:users'
 include ':features:list'
 include ':features:shared'
 include ':features:details'
+include ':domain:common'
