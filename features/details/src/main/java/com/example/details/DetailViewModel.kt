@@ -6,10 +6,12 @@ import com.example.details.mappers.toBriefInfo
 import com.example.details.mappers.toData
 import com.example.details.model.UserDetails
 import com.example.domain.UserDetailsInteractor
-import com.example.domain.common.model.State
 import com.example.domain.common.model.map
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.map
 
 
 class DetailViewModel(
@@ -17,18 +19,12 @@ class DetailViewModel(
     private val userId: Long
 ) : ViewModel() {
 
-    private val _userDetails = MutableStateFlow<State<UserDetails>>(State.Loading())
-    val userDetails = _userDetails.asStateFlow()
+    val userDetails = viewModelScope.async(start = CoroutineStart.LAZY) { fetchData() }
 
-    fun fetchData() {
-        viewModelScope.launch {
-            getUserDetails(userId).map { state ->
-                state.map { UserDetails(it.toBriefInfo(), it.toData()) }
-            }
-                .distinctUntilChanged()
-                .collectLatest { _userDetails.value = it }
-        }
-    }
+    private suspend fun fetchData() = getUserDetails(userId).map { state ->
+            state.map { UserDetails(it.toBriefInfo(), it.toData()) }
+        }.distinctUntilChanged().stateIn(viewModelScope)
+
 
     private fun getUserDetails(userId: Long) = interactor.getUserDetails(userId)
 }

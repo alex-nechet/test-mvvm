@@ -1,9 +1,6 @@
 package com.example.network.model
 
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonAdapter
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.Types
 
 data class UserResponse(
     @Json(name = "login")

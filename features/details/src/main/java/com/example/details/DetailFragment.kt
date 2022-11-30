@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.shared.extensions.setImageUrl
@@ -18,6 +20,7 @@ import com.example.details.model.UserDetails
 import com.example.domain.common.model.State
 import com.example.domain.common.model.map
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -42,19 +45,17 @@ class DetailFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         binding.detailsRecyclerView.layoutManager = LinearLayoutManager(context)
         binding.detailsRecyclerView.adapter = adapter
-        if (savedInstanceState == null) {
-            viewModel.fetchData()
-        }
         observeData()
     }
 
     private fun observeData() {
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.userDetails.collectLatest {
-                setDetails(it)
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.userDetails.await().collectLatest {
+                    setDetails(it)
+                }
             }
         }
     }

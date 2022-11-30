@@ -12,6 +12,6 @@ plugins {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     api project(':domain:common')
-    api 'androidx.paging:paging-common-ktx:3.1.1'
+    api libs.paging.common.ktx
     api libs.koin.core
 }

@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.paging.*
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.domain.model.BriefInfo
 import com.example.list.databinding.FragmentListBinding
@@ -53,10 +55,11 @@ class ListFragment : Fragment() {
     }
 
     private fun observeData() {
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.fetchData()
-            viewModel.data.collectLatest { state ->
-                setupData(state)
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.data.await().collectLatest { state ->
+                    setupData(state)
+                }
             }
         }
     }
