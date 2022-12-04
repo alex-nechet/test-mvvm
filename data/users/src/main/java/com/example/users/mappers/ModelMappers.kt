@@ -1,25 +1,9 @@
 package com.example.users.mappers
 
 import com.example.users.db.model.UserDb
-import com.example.domain.model.BriefInfo
+import com.example.domain.model.UserBaseInfo
 import com.example.domain.model.User
 import com.example.network.model.UserResponse
-
-fun UserDb.toBriefInfo() = BriefInfo(
-    id = id,
-    name = name,
-    login = login,
-    avatarUrl = avatarUrl,
-    url = url
-)
-
-fun User.toBriefInfo() = BriefInfo(
-    id = id,
-    name = name,
-    login = login,
-    avatarUrl = avatarUrl,
-    url = url
-)
 
 fun UserResponse.toDb() = UserDb(
     login = login.orEmpty(),

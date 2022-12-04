@@ -5,13 +5,13 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.domain.model.BriefInfo
+import com.example.domain.model.UserBaseInfo
 import com.example.list.databinding.ItemListBinding
 import com.example.shared.extensions.setImageUrl
 
 class UserListAdapter(
-    private val action: (info: BriefInfo) -> Unit
-) : PagingDataAdapter<BriefInfo, UserListAdapter.UserViewHolder>(UsersDiffCallback()) {
+    private val action: (info: UserBaseInfo) -> Unit
+) : PagingDataAdapter<UserBaseInfo, UserListAdapter.UserViewHolder>(UsersDiffCallback()) {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
@@ -30,7 +30,7 @@ class UserListAdapter(
         private val binding: ItemListBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(user: BriefInfo, action: (movie: BriefInfo) -> Unit) {
+        fun bind(user: UserBaseInfo, action: (movie: UserBaseInfo) -> Unit) {
             with(binding) {
                 title.text = user.name.ifEmpty { user.login }
                 image.setImageUrl(imageUrl = user.avatarUrl, centerCrop = true)
@@ -44,12 +44,12 @@ class UserListAdapter(
         }
     }
 
-    class UsersDiffCallback : DiffUtil.ItemCallback<BriefInfo>() {
-        override fun areItemsTheSame(oldItem: BriefInfo, newItem: BriefInfo): Boolean {
+    class UsersDiffCallback : DiffUtil.ItemCallback<UserBaseInfo>() {
+        override fun areItemsTheSame(oldItem: UserBaseInfo, newItem: UserBaseInfo): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: BriefInfo, newItem: BriefInfo): Boolean {
+        override fun areContentsTheSame(oldItem: UserBaseInfo, newItem: UserBaseInfo): Boolean {
             return oldItem == newItem
         }
     }

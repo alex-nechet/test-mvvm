@@ -12,13 +12,13 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.shared.extensions.setImageUrl
-import com.example.domain.model.BriefInfo
+import com.example.domain.model.UserBaseInfo
 import com.example.details.databinding.FragmentDetailBinding
 import com.example.details.mappers.toErrorResource
-import com.example.details.model.Data
-import com.example.details.model.UserDetails
 import com.example.domain.common.model.State
 import com.example.domain.common.model.map
+import com.example.domain.model.Data
+import com.example.domain.model.UserDetails
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -60,7 +60,7 @@ class DetailFragment : Fragment() {
         }
     }
 
-    private fun setBasicDetails(data: BriefInfo) = with(binding) {
+    private fun setBasicDetails(data: UserBaseInfo) = with(binding) {
         url.text = data.url
         title.text = data.login
         headerImage.setImageUrl(data.avatarUrl)

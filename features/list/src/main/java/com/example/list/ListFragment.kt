@@ -11,7 +11,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.domain.model.BriefInfo
+import com.example.domain.model.UserBaseInfo
 import com.example.list.databinding.FragmentListBinding
 import com.example.shared.navigation.Destination
 import com.example.shared.navigation.navigateTo
@@ -64,7 +64,7 @@ class ListFragment : Fragment() {
         }
     }
 
-    private suspend fun setupData(data: PagingData<BriefInfo>) {
+    private suspend fun setupData(data: PagingData<UserBaseInfo>) {
         userAdapter.submitData(data)
     }
 

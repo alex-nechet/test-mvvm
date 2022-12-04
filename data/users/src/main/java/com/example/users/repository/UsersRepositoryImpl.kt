@@ -5,7 +5,6 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
-import com.example.data.repository.RemoteMediator
 import com.example.users.datasource.local.UserLocalDataSource
 import com.example.users.mappers.toDb
 import com.example.users.mappers.toUser
@@ -36,8 +35,8 @@ class UsersRepositoryImpl(
         return Pager(
             config = PagingConfig(
                 pageSize = PAGE_SIZE,
-                enablePlaceholders = true,
-                prefetchDistance = 3 * PAGE_SIZE
+                enablePlaceholders = false,
+                prefetchDistance =  PAGE_SIZE + PAGE_SIZE
             ),
             pagingSourceFactory = pagingSourceFactory,
             remoteMediator = RemoteMediator(remote, local)

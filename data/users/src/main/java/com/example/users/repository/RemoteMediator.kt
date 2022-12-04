@@ -1,4 +1,4 @@
-package com.example.data.repository
+package com.example.users.repository
 
 import android.util.Log
 import androidx.paging.ExperimentalPagingApi
@@ -31,7 +31,6 @@ internal class RemoteMediator(
             }
 
             val response = userRemoteDataSource.getUsers(loadKey ?: START_PAGE_INDEX)
-            Log.e("LOADKEY", loadKey.toString())
             if (loadType == LoadType.REFRESH) {
                 userLocalDataSource.deleteAll()
             }
