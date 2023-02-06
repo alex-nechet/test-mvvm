@@ -10,16 +10,12 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlin.coroutines.CoroutineContext
 
-interface UserDetailsInteractor {
-    fun getUserDetails(userId: Long): Flow<State<User>>
-}
-
-class UserDetailsInteractorImpl(
+class GetUserDetailsUseCase(
     private val repository: UserRepository,
     private val coroutineContext: CoroutineContext
-) : UserDetailsInteractor {
+) {
 
-    override fun getUserDetails(userId: Long): Flow<State<User>> = flow {
+    operator fun invoke(userId: Long): Flow<State<User>> = flow {
         emit(State.Loading())
         val result = repository.fetchUser(userId)
         result.onFailure { emit(State.Error<User>(ErrorType.FETCHING_ERROR)) }

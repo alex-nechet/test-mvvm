@@ -35,7 +35,7 @@ class UserDetailsAdapter :
     }
 
     class DetailsDiffCallback : DiffUtil.ItemCallback<Data>() {
-        override fun areItemsTheSame(oldItem: Data, newItem: Data) = false
-        override fun areContentsTheSame(oldItem: Data, newItem: Data) = false
+        override fun areItemsTheSame(oldItem: Data, newItem: Data) = oldItem.text == newItem.text
+        override fun areContentsTheSame(oldItem: Data, newItem: Data) = oldItem == newItem
     }
 }

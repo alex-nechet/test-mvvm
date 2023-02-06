@@ -1,7 +1,6 @@
 package com.example.users.mappers
 
 import com.example.users.db.model.UserDb
-import com.example.domain.model.UserBaseInfo
 import com.example.domain.model.User
 import com.example.network.model.UserResponse
 

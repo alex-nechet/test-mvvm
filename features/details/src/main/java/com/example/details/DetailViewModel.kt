@@ -3,7 +3,7 @@ package com.example.details
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.details.mappers.toData
-import com.example.domain.UserDetailsInteractor
+import com.example.domain.GetUserDetailsUseCase
 import com.example.domain.common.model.map
 import com.example.domain.model.UserDetails
 import kotlinx.coroutines.CoroutineStart
@@ -14,18 +14,17 @@ import kotlinx.coroutines.flow.map
 
 
 class DetailViewModel(
-    private val interactor: UserDetailsInteractor,
+    private val getUserDetailsUseCase: GetUserDetailsUseCase,
     private val userId: Long
 ) : ViewModel() {
 
     val userDetails = viewModelScope.async(start = CoroutineStart.LAZY) { fetchData() }
 
     private suspend fun fetchData() = getUserDetails(userId).map { state ->
-            state.map { UserDetails(it, it.toData()) }
-        }.distinctUntilChanged().stateIn(viewModelScope)
+        state.map { UserDetails(it, it.toData()) }
+    }.distinctUntilChanged().stateIn(viewModelScope)
 
-
-    private fun getUserDetails(userId: Long) = interactor.getUserDetails(userId)
+    private fun getUserDetails(userId: Long) = getUserDetailsUseCase(userId)
 }
 
 

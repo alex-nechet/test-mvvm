@@ -1,13 +1,13 @@
 package com.example.domain.model
 
 data class User(
-    override val login: String,
-    override val id: Long,
-    override val name: String,
+    val login: String,
+    val id: Long,
+    val name: String,
     val nodeId: String,
-    override val avatarUrl: String,
+    val avatarUrl: String,
     val gravatarId: String,
-    override val url: String,
+    val url: String,
     val htmlUrl: String,
     val followersUrl: String,
     val followingUrl: String,
@@ -24,8 +24,8 @@ data class User(
     val company: String,
     val email: String,
     val bio: String,
-    val twitterUsername : String,
-    val followers : Int,
-    val following : Int,
-    val createdAt : String
-) : UserBaseInfo
+    val twitterUsername: String,
+    val followers: Int,
+    val following: Int,
+    val createdAt: String
+)
