@@ -6,12 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.shared.extensions.setImageUrl
+import androidx.recyclerview.widget.RecyclerView
 import com.example.details.databinding.FragmentDetailBinding
 import com.example.details.mappers.toErrorResource
 import com.example.domain.common.model.State
@@ -19,8 +16,8 @@ import com.example.domain.common.model.map
 import com.example.domain.model.Data
 import com.example.domain.model.User
 import com.example.domain.model.UserDetails
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
+import com.example.shared.extensions.launchOnEveryStart
+import com.example.shared.extensions.setImageUrl
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -51,13 +48,7 @@ class DetailFragment : Fragment() {
     }
 
     private fun observeData() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.userDetails.await().collectLatest {
-                    setDetails(it)
-                }
-            }
-        }
+        launchOnEveryStart(viewModel.userDetails) { setDetails(it) }
     }
 
     private fun setBasicDetails(data: User) = with(binding) {
@@ -72,8 +63,9 @@ class DetailFragment : Fragment() {
         with(binding) {
             loading.isVisible = state is State.Loading
             when (state) {
-                is State.Error -> error.errorText.text =
-                    getString(state.errorType.toErrorResource())
+                is State.Error -> {
+                    error.errorText.text = getString(state.errorType.toErrorResource())
+                }
                 else -> error.errorText.text = ""
             }
             if (state is State.Success) {

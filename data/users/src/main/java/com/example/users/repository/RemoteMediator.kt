@@ -24,14 +24,21 @@ internal class RemoteMediator(
     ): MediatorResult {
         return try {
             val loadKey = when (loadType) {
-                LoadType.REFRESH -> null
+                LoadType.REFRESH -> START_PAGE_INDEX
                 LoadType.PREPEND -> return MediatorResult.Success(endOfPaginationReached = true)
-                LoadType.APPEND -> state.lastItemOrNull()?.id
+                LoadType.APPEND -> state.lastItemOrNull()?.id ?: START_PAGE_INDEX
             }
 
-            val response = userRemoteDataSource.getUsers(loadKey ?: START_PAGE_INDEX)
-            if (loadType == LoadType.REFRESH) {
+            if (loadKey == START_PAGE_INDEX) {
                 userLocalDataSource.deleteAll()
+            }
+
+            val response = userRemoteDataSource.getUsers(loadKey)
+
+            response.onSuccess { list ->
+                list?.let { nonNullList ->
+                    userLocalDataSource.insertAll(nonNullList.map { it.toDb() })
+                }
             }
             return mediatorResult(response)
         } catch (e: Exception) {
@@ -39,15 +46,8 @@ internal class RemoteMediator(
         }
     }
 
-    private suspend fun mediatorResult(response: Result<List<UserResponse>?>): MediatorResult {
-        lateinit var mediatorResult: MediatorResult
-        response.onSuccess { list ->
-                list?.let { nonNullList ->
-                     userLocalDataSource.insertAll(nonNullList.map { it.toDb() })
-                }
-                mediatorResult =  MediatorResult.Success(list.isNullOrEmpty())
-            }
-            .onFailure { mediatorResult = MediatorResult.Error(it) }
-        return mediatorResult
-    }
+    private fun mediatorResult(response: Result<List<UserResponse>?>) = response.fold(
+        onSuccess = { MediatorResult.Success(it.isNullOrEmpty()) },
+        onFailure = { MediatorResult.Error(it) }
+    )
 }

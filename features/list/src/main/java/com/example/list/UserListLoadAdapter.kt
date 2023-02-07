@@ -9,13 +9,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.list.databinding.ItemLoadStateBinding
 
 class UserListLoadAdapter(
-    private val retry: () -> Unit
+    private val retryAction: () -> Unit
 ) : LoadStateAdapter<UserListLoadAdapter.LoadStateViewHolder>() {
 
     override fun onBindViewHolder(
         holder: LoadStateViewHolder,
         loadState: LoadState
-    ) = holder.bind(loadState, retry)
+    ) = holder.bind(loadState, retryAction)
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -40,8 +40,8 @@ class UserListLoadAdapter(
 
                 if (loadState is LoadState.Error) {
                     errorMessage.text = loadState.error.localizedMessage
+                    retry.setOnClickListener { retryAction() }
                 }
-                retry.setOnClickListener { retryAction.invoke() }
             }
         }
     }

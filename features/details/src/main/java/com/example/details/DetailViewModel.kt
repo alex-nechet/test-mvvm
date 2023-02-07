@@ -8,7 +8,6 @@ import com.example.domain.common.model.map
 import com.example.domain.model.UserDetails
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.map
 
@@ -22,7 +21,7 @@ class DetailViewModel(
 
     private suspend fun fetchData() = getUserDetails(userId).map { state ->
         state.map { UserDetails(it, it.toData()) }
-    }.distinctUntilChanged().stateIn(viewModelScope)
+    }.stateIn(viewModelScope)
 
     private fun getUserDetails(userId: Long) = getUserDetailsUseCase(userId)
 }

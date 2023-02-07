@@ -12,18 +12,14 @@ interface UserLocalDataSource {
     suspend fun getUserDetails(userId: Long): UserDb?
 }
 
-class UserLocalDataSourceImpl(private val appDatabase: AppDatabase) : UserLocalDataSource {
+class UserLocalDataSourceImpl(appDatabase: AppDatabase) : UserLocalDataSource {
     private val dao = appDatabase.usersDao()
 
     override fun getAllUsers() = dao.getAll()
 
-    override suspend fun deleteAll() = appDatabase.withTransaction {
-        appDatabase.usersDao().deleteAll()
-    }
+    override suspend fun deleteAll() = dao.deleteAll()
 
-    override suspend fun insertAll(users: List<UserDb>) = appDatabase.withTransaction {
-        dao.insertAll(users)
-    }
+    override suspend fun insertAll(users: List<UserDb>) = dao.insertAll(users)
 
     override suspend fun getUserDetails(userId: Long) = dao.getUser(userId)
 }

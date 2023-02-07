@@ -5,18 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingData
+import androidx.paging.map
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.domain.model.User
 import com.example.list.databinding.FragmentListBinding
+import com.example.shared.extensions.launchOnEveryStart
 import com.example.shared.navigation.Destination
 import com.example.shared.navigation.navigateTo
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @ExperimentalPagingApi
@@ -49,23 +46,16 @@ class ListFragment : Fragment() {
         }
 
         userAdapter.addLoadStateListener {
-            loadStateFooter.loadState = it.refresh
+            loadStateFooter.loadState =  it.refresh
         }
         observeData()
     }
 
     private fun observeData() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.data.await().collectLatest { state ->
-                    setupData(state)
-                }
-            }
-        }
-    }
+        launchOnEveryStart(viewModel.data) {
 
-    private suspend fun setupData(data: PagingData<User>) {
-        userAdapter.submitData(data)
+            userAdapter.submitData(this.lifecycle, it)
+        }
     }
 
     override fun onDestroyView() {

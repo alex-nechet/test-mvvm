@@ -13,7 +13,6 @@ class UserListAdapter(
     private val action: (info: User) -> Unit
 ) : PagingDataAdapter<User, UserListAdapter.UserViewHolder>(UsersDiffCallback()) {
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(R.layout.item_list, parent, false)
