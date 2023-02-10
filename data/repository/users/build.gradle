@@ -41,11 +41,11 @@ dependencies {
     implementation libs.koin.android
 
     testImplementation libs.junit
-    testImplementation libs.core.testing
+//    testImplementation libs.core.testing
     testImplementation libs.kotlinx.coroutines.test
     testImplementation libs.mockito.kotlin
     testImplementation libs.mockito.inline
     testImplementation libs.kotlin.test
-    testImplementation libs.turbine
+//    testImplementation libs.turbine
 
 }
