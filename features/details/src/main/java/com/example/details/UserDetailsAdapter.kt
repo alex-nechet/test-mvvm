@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.details.databinding.ItemDetailsBinding
-import com.example.domain.model.Data
+import com.example.domain.entity.Data
 
 class UserDetailsAdapter :
     ListAdapter<Data, UserDetailsAdapter.UserViewHolder>(DetailsDiffCallback()) {

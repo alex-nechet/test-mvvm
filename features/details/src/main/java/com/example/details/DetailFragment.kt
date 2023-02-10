@@ -8,14 +8,13 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.details.databinding.FragmentDetailBinding
 import com.example.details.mappers.toErrorResource
 import com.example.domain.common.model.State
 import com.example.domain.common.model.map
-import com.example.domain.model.Data
-import com.example.domain.model.User
-import com.example.domain.model.UserDetails
+import com.example.domain.entity.Data
+import com.example.domain.entity.User
+import com.example.domain.entity.UserDetails
 import com.example.shared.extensions.launchOnEveryStart
 import com.example.shared.extensions.setImageUrl
 import org.koin.androidx.viewmodel.ext.android.viewModel

@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.domain.model.User
+import com.example.domain.entity.User
 import com.example.list.databinding.ItemListBinding
 import com.example.shared.extensions.setImageUrl
 

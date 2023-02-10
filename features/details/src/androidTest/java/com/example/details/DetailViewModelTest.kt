@@ -2,7 +2,7 @@ package com.example.details
 
 import com.example.domain.UserDetailsUseCase
 import com.example.domain.common.model.State
-import com.example.domain.model.User
+import com.example.domain.entity.User
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking

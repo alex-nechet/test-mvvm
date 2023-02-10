@@ -3,16 +3,14 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
 }
-apply plugin: "androidx.navigation.safeargs.kotlin"
 
 android {
-    namespace 'com.example.details'
+    namespace 'com.example.data'
     compileSdkVersion buildConfig.compileSdk
 
     defaultConfig {
         minSdkVersion buildConfig.minSdk
         targetSdkVersion buildConfig.targetSdk
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
@@ -31,14 +29,23 @@ android {
     kotlinOptions {
         jvmTarget = buildConfig.javaVersion.toString()
     }
-
-    buildFeatures {
-        viewBinding true
-    }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':data:network')
     implementation project(':data:domain:users')
-    implementation project(':features:shared')
+    implementation libs.room.runtime
+    kapt libs.room.compiler
+    implementation libs.room.paging
+    implementation libs.room.ktx
+    implementation libs.koin.android
+
+    testImplementation libs.junit
+    testImplementation libs.core.testing
+    testImplementation libs.kotlinx.coroutines.test
+    testImplementation libs.mockito.kotlin
+    testImplementation libs.mockito.inline
+    testImplementation libs.kotlin.test
+    testImplementation libs.turbine
+
 }

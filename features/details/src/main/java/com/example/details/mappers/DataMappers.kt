@@ -1,8 +1,8 @@
 package com.example.details.mappers
 
 import com.example.details.R
-import com.example.domain.model.Data
-import com.example.domain.model.User
+import com.example.domain.entity.Data
+import com.example.domain.entity.User
 
 fun User.toData() = listOf(
     Data(R.string.company, this.company),

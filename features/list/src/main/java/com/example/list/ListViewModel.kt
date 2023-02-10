@@ -7,7 +7,6 @@ import androidx.paging.cachedIn
 import com.example.domain.GetAllUsersUseCase
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.stateIn
 
 @ExperimentalPagingApi

@@ -2,7 +2,7 @@ package com.example.network.remote
 
 import com.example.network.GitApi
 import com.example.network.mappers.toResult
-import com.example.network.model.UserResponse
+import com.example.network.dto.UserResponse
 import retrofit2.Retrofit
 
 interface UserRemoteDataSource {

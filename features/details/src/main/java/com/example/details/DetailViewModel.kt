@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.details.mappers.toData
 import com.example.domain.GetUserDetailsUseCase
 import com.example.domain.common.model.map
-import com.example.domain.model.UserDetails
+import com.example.domain.entity.UserDetails
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.stateIn

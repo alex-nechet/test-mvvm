@@ -6,10 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.paging.ExperimentalPagingApi
-import androidx.paging.PagingData
-import androidx.paging.map
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.domain.model.User
 import com.example.list.databinding.FragmentListBinding
 import com.example.shared.extensions.launchOnEveryStart
 import com.example.shared.navigation.Destination
