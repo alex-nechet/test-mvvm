@@ -2,6 +2,15 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id "org.sonarqube" version "3.5.0.2730"
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "flyordie52_test-mvvm"
+        property "sonar.organization", "flyordie52"
+        property "sonar.host.url", "https://sonarcloud.io"
+    }
 }
 
 android {
