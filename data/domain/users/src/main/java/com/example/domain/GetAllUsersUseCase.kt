@@ -8,7 +8,6 @@ import kotlinx.coroutines.flow.Flow
 
 @OptIn(ExperimentalPagingApi::class)
 class GetAllUsersUseCase(private val repository: UserRepository) {
-
     operator fun invoke(): Flow<PagingData<User>> = repository.fetchUsers()
 
 }

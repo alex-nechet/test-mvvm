@@ -1,8 +1,8 @@
-package com.example.users.datasource.local
+package com.example.local.users
 
 import androidx.paging.PagingSource
-import com.example.users.db.AppDatabase
-import com.example.users.db.model.UserDb
+import com.example.local.users.db.AppDatabase
+import com.example.local.users.db.model.UserDb
 
 interface UserLocalDataSource {
     fun getAllUsers(): PagingSource<Int, UserDb>?

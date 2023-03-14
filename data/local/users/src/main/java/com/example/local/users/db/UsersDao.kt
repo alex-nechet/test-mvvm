@@ -1,11 +1,11 @@
-package com.example.users.db
+package com.example.local.users.db
 
 import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.users.db.model.UserDb
+import com.example.local.users.db.model.UserDb
 
 @Dao
  interface UsersDao {

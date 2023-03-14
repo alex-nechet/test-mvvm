@@ -6,8 +6,7 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import com.example.network.dto.UserResponse
 import com.example.network.remote.UserRemoteDataSource
-import com.example.users.datasource.local.UserLocalDataSource
-import com.example.users.db.model.UserDb
+import com.example.local.users.UserLocalDataSource
 import com.example.users.mappers.toDb
 
 private const val START_PAGE_INDEX = 0L
@@ -16,11 +15,11 @@ private const val START_PAGE_INDEX = 0L
 internal class RemoteMediator(
     private val userRemoteDataSource: UserRemoteDataSource,
     private val userLocalDataSource: UserLocalDataSource
-) : RemoteMediator<Int, UserDb>() {
+) : RemoteMediator<Int, com.example.local.users.db.model.UserDb>() {
 
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<Int, UserDb>
+        state: PagingState<Int, com.example.local.users.db.model.UserDb>
     ): MediatorResult {
         return try {
             val loadKey = when (loadType) {

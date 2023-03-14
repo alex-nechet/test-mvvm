@@ -1,6 +1,6 @@
 package com.example.users.mappers
 
-import com.example.users.db.model.UserDb
+import com.example.local.users.db.model.UserDb
 import com.example.domain.entity.User
 import com.example.network.dto.UserResponse
 

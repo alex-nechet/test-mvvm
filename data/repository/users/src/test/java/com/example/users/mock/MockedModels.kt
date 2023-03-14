@@ -1,8 +1,8 @@
 package com.example.users.mock
 
-import com.example.users.db.model.UserDb
+import com.example.local.users.db.model.UserDb
 
-val emptyUserDb = UserDb(
+val emptyUserDb = com.example.local.users.db.model.UserDb(
     id = 0,
     login = "",
     siteAdmin = false,

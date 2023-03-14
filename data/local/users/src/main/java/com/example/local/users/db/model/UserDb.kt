@@ -1,4 +1,4 @@
-package com.example.users.db.model
+package com.example.local.users.db.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

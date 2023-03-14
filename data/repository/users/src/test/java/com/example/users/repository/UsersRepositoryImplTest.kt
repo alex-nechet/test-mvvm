@@ -3,7 +3,7 @@ package com.example.users.repository
 import com.example.domain.repository.UserRepository
 import com.example.network.dto.UserResponse
 import com.example.network.remote.UserRemoteDataSource
-import com.example.users.datasource.local.UserLocalDataSource
+import com.example.local.users.UserLocalDataSource
 import com.example.users.mappers.toDb
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

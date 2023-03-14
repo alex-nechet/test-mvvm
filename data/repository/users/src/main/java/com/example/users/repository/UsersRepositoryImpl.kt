@@ -5,7 +5,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
-import com.example.users.datasource.local.UserLocalDataSource
+import com.example.local.users.UserLocalDataSource
 import com.example.users.mappers.toDb
 import com.example.users.mappers.toUser
 import com.example.domain.entity.User
