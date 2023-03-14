@@ -1,10 +1,10 @@
 package com.example.network.di
 
+import com.example.network.GitApi
+import com.example.network.mappers.ResultConverter
+import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import com.example.network.remote.UserRemoteDataSource
-import com.example.network.remote.UserRemoteDataSourceImpl
-import com.squareup.moshi.JsonAdapter
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -29,27 +29,23 @@ object Koin {
 
     private external fun tokenJNI(): String
 
-    val userRemoteDataSource = module {
-        factory<UserRemoteDataSource> { UserRemoteDataSourceImpl(get()) }
-    }
-
     fun networkModule(debuggable: Boolean) = module {
         /**
          * Use tokenless calls as it is or add your TOKEN to secret.cpp
          */
-        factory(named(AUTH_INTERCEPTOR)) {
+        single(named(AUTH_INTERCEPTOR)) {
             Interceptor { chain ->
                 val requestBuilder = chain.request().newBuilder()
                 requestBuilder.addHeader(HEADER_AUTHORIZATION, "token ${tokenJNI()}")
                 chain.proceed(requestBuilder.build())
             }
         }
-        factory<Interceptor>(named(LOGGING_INTERCEPTOR)) {
+        single<Interceptor>(named(LOGGING_INTERCEPTOR)) {
             HttpLoggingInterceptor().apply {
                 setLevel(HttpLoggingInterceptor.Level.BODY)
             }
         }
-        factory {
+        single {
             val builder = OkHttpClient.Builder()
             if (debuggable) {
                 builder.addInterceptor(get<Interceptor>(named(LOGGING_INTERCEPTOR)))
@@ -60,11 +56,9 @@ object Koin {
             }
             builder.build()
         }
-
-        factory { Moshi.Builder().add(get()).build() }
+        single { Moshi.Builder().add(get()).build() }
         factory<JsonAdapter.Factory> { KotlinJsonAdapterFactory() }
         factory<Converter.Factory> { MoshiConverterFactory.create(get()) }
-
         single<Retrofit> {
             Retrofit.Builder()
                 .baseUrl(baseUrlJNI())
@@ -72,5 +66,7 @@ object Koin {
                 .client(get())
                 .build()
         }
+        single { get<Retrofit>().create(GitApi::class.java) }
+        single { ResultConverter(get()) }
     }
 }

@@ -1,10 +1,10 @@
 package com.example.users.mappers
 
-import com.example.local.users.db.model.UserDb
+import com.example.local.users.model.UserDb
 import com.example.domain.entity.User
-import com.example.network.dto.UserResponse
+import com.example.remote.users.model.UserDto
 
-fun UserResponse.toDb() = UserDb(
+fun UserDto.toDb() = UserDb(
     login = login.orEmpty(),
     id = id,
     name = name.orEmpty(),
@@ -34,7 +34,7 @@ fun UserResponse.toDb() = UserDb(
     twitterUsername = twitterUsername.orEmpty()
 )
 
-fun UserResponse.toUser() = User(
+fun UserDto.toUser() = User(
     login = login.orEmpty(),
     id = id,
     name = name.orEmpty(),

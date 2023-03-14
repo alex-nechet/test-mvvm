@@ -10,7 +10,7 @@ import com.example.users.mappers.toDb
 import com.example.users.mappers.toUser
 import com.example.domain.entity.User
 import com.example.domain.repository.UserRepository
-import com.example.network.remote.UserRemoteDataSource
+import com.example.remote.users.UserRemoteDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map

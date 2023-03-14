@@ -1,4 +1,4 @@
-package com.example.network.dto
+package com.example.network.response
 
 import com.squareup.moshi.Json
 

@@ -4,9 +4,10 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
-import com.example.network.dto.UserResponse
-import com.example.network.remote.UserRemoteDataSource
+import com.example.remote.users.UserRemoteDataSource
 import com.example.local.users.UserLocalDataSource
+import com.example.local.users.model.UserDb
+import com.example.remote.users.model.UserDto
 import com.example.users.mappers.toDb
 
 private const val START_PAGE_INDEX = 0L
@@ -15,11 +16,11 @@ private const val START_PAGE_INDEX = 0L
 internal class RemoteMediator(
     private val userRemoteDataSource: UserRemoteDataSource,
     private val userLocalDataSource: UserLocalDataSource
-) : RemoteMediator<Int, com.example.local.users.db.model.UserDb>() {
+) : RemoteMediator<Int, UserDb>() {
 
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<Int, com.example.local.users.db.model.UserDb>
+        state: PagingState<Int, UserDb>
     ): MediatorResult {
         return try {
             val loadKey = when (loadType) {
@@ -45,7 +46,7 @@ internal class RemoteMediator(
         }
     }
 
-    private fun mediatorResult(response: Result<List<UserResponse>?>) = response.fold(
+    private fun mediatorResult(response: Result<List<UserDto>?>) = response.fold(
         onSuccess = { MediatorResult.Success(it.isNullOrEmpty()) },
         onFailure = { MediatorResult.Error(it) }
     )

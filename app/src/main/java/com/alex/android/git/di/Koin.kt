@@ -6,17 +6,22 @@ import com.example.domain.di.domainModule
 import com.example.list.di.listPresentationModule
 import com.example.local.users.di.userLocalDataSource
 import com.example.network.di.Koin.networkModule
-import com.example.network.di.Koin.userRemoteDataSource
+import com.example.remote.users.di.userRemoteDataSource
 import com.example.users.di.userRepositoryModule
 
 object Koin {
 
-    private val usersListModule = listPresentationModule + userLocalDataSource + userRemoteDataSource + userRepositoryModule
+    private val usersListModule = listOf(
+        listPresentationModule,
+        userLocalDataSource,
+        userRemoteDataSource,
+        userRepositoryModule
+    )
 
-    private val presentationModule =  detailsPresentationModule
+    private val presentationModule = detailsPresentationModule
     val modules =
         usersListModule +
-        presentationModule +
-        domainModule +
-        networkModule(BuildConfig.DEBUG)
+                presentationModule +
+                domainModule +
+                networkModule(BuildConfig.DEBUG)
 }

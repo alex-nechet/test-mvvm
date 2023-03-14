@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace 'com.example.data'
+    namespace 'com.example.remote.users'
     compileSdkVersion buildConfig.compileSdk
 
     defaultConfig {
@@ -32,13 +32,11 @@ android {
 }
 
 dependencies {
-    implementation project(':data:remote:users')
-    implementation project(':data:local:users')
-    implementation project(':data:domain:users')
-    implementation libs.room.runtime
-    kapt libs.room.compiler
-    implementation 'androidx.paging:paging-common-ktx:3.1.1'
-    implementation libs.room.ktx
+    implementation project(':data:network')
+//    kapt libs.room.compiler
+//    implementation libs.room.paging
+//    implementation libs.room.ktx
+    implementation libs.retrofit
     implementation libs.koin.android
 
     testImplementation libs.junit
