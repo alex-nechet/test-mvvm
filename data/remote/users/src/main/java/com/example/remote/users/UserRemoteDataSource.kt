@@ -1,7 +1,6 @@
 package com.example.remote.users
 
 import com.example.network.GitApi
-import com.example.network.response.UserResponse
 import com.example.network.mappers.ResultConverter
 import com.example.remote.users.mappers.toDto
 import com.example.remote.users.model.UserDto

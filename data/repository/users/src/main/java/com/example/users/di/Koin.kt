@@ -2,7 +2,6 @@ package com.example.users.di
 
 import com.example.domain.di.IO
 import com.example.domain.repository.UserRepository
-import com.example.local.users.di.userLocalDataSource
 import com.example.users.repository.UsersRepositoryImpl
 import kotlinx.coroutines.Dispatchers
 import org.koin.core.qualifier.named
