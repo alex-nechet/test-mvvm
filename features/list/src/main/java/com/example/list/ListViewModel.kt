@@ -9,7 +9,6 @@ import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.stateIn
 
-@ExperimentalPagingApi
 class ListViewModel(private val getAllUsersUseCase: GetAllUsersUseCase) : ViewModel() {
 
     val data = viewModelScope.async(start = CoroutineStart.LAZY) {

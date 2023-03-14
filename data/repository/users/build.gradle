@@ -37,9 +37,8 @@ dependencies {
     implementation project(':data:domain:users')
     implementation libs.room.runtime
     kapt libs.room.compiler
-    implementation 'androidx.paging:paging-common-ktx:3.1.1'
+    implementation libs.paging.common.ktx
     implementation libs.room.ktx
-    implementation libs.koin.android
 
     testImplementation libs.junit
     testImplementation libs.kotlinx.coroutines.test

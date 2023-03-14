@@ -11,7 +11,7 @@ interface UserRemoteDataSource {
     suspend fun getDetails(userId: Long): Result<UserDto?>
 }
 
-internal class UserRemoteDataSourceImpl(
+class UserRemoteDataSourceImpl(
     private val api: GitApi,
     private val resultConverter: ResultConverter
 ) : UserRemoteDataSource {

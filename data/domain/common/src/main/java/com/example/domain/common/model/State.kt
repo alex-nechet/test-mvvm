@@ -1,9 +1,9 @@
 package com.example.domain.common.model
 
-sealed interface State<out T> {
-    data class Success<T>(val data: T) : State<T>
-    class Loading<T> : State<T>
-    data class Error<T>(val errorType: ErrorType) : State<T>
+sealed class State<out T> {
+    data class Success<T>(val data: T) : State<T>()
+    class Loading<T> : State<T>()
+    data class Error<T>(val errorType: ErrorType) : State<T>()
 }
 
 fun <T, R> State<T>.map(transform: (data: T) -> R) : State<R> = when(this){
