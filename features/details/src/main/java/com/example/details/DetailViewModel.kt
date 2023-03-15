@@ -8,9 +8,8 @@ import com.example.domain.common.model.map
 import com.example.domain.entity.UserDetails
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.map
-
+import kotlinx.coroutines.flow.stateIn
 
 class DetailViewModel(
     private val getUserDetailsUseCase: GetUserDetailsUseCase,
@@ -25,6 +24,3 @@ class DetailViewModel(
 
     private fun getUserDetails(userId: Long) = getUserDetailsUseCase(userId)
 }
-
-
-

@@ -1,3 +1,1 @@
-class UserRemoteDataSourceTest {
-
-}
+class UserRemoteDataSourceTest

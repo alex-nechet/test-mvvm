@@ -8,15 +8,15 @@ import androidx.room.Query
 import com.example.local.users.model.UserDb
 
 @Dao
- interface UsersDao {
+interface UsersDao {
     @Query("SELECT * FROM users ORDER BY id")
-      fun getAll():  PagingSource<Int, UserDb>?
+    fun getAll(): PagingSource<Int, UserDb>?
 
     @Query("SELECT * FROM users WHERE id = :id LIMIT 1")
-     suspend fun getUser(id: Long) : UserDb
+    suspend fun getUser(id: Long): UserDb
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-     suspend fun insertAll(users: List<UserDb>)
+    suspend fun insertAll(users: List<UserDb>)
 
     @Query("DELETE from users")
     suspend fun deleteAll()

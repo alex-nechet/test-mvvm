@@ -8,5 +8,4 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private val navController by lazy { findNavController(R.id.nav_host_fragment) }
 
     override fun onSupportNavigateUp() = navController.navigateUp()
-
 }

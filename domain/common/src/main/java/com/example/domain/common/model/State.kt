@@ -6,10 +6,8 @@ sealed class State<out T> {
     data class Error<T>(val errorType: ErrorType) : State<T>()
 }
 
-fun <T, R> State<T>.map(transform: (data: T) -> R) : State<R> = when(this){
+fun <T, R> State<T>.map(transform: (data: T) -> R): State<R> = when (this) {
     is State.Error<T> -> State.Error(this.errorType)
     is State.Loading<T> -> State.Loading()
     is State.Success<T> -> State.Success(transform.invoke(this.data))
 }
-
-

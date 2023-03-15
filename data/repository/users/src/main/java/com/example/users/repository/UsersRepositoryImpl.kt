@@ -5,16 +5,16 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
-import com.example.local.users.UserLocalDataSource
-import com.example.users.mappers.toDb
-import com.example.users.mappers.toUser
 import com.example.domain.entity.User
 import com.example.domain.repository.UserRepository
+import com.example.local.users.UserLocalDataSource
 import com.example.remote.users.UserRemoteDataSource
+import com.example.users.mappers.toDb
+import com.example.users.mappers.toUser
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.withContext
 import kotlin.coroutines.CoroutineContext
 
 private const val PAGE_SIZE = 100
@@ -38,22 +38,20 @@ class UsersRepositoryImpl(
                 enablePlaceholders = false
             ),
             pagingSourceFactory = pagingSourceFactory,
-            remoteMediator = RemoteMediator(remote, local),
+            remoteMediator = RemoteMediator(remote, local)
         ).flow
 
         return pagerFlow.map { pd -> pd.map { it.toUser() } }.flowOn(coroutineContext)
     }
 
-    override suspend fun fetchUser(userId: Long): Result<User?> = withContext(coroutineContext) {
+    override fun fetchUser(userId: Long): Flow<Result<User?>> = flow {
         when (val localUser = local.getUserDetails(userId)) {
             null -> {
                 val remoteUser = remote.getDetails(userId)
                 remoteUser.onSuccess { user -> user?.let { local.insertAll(listOf(it.toDb())) } }
-                remoteUser.map { it?.toUser() }
+                emit(remoteUser.map { it?.toUser() })
             }
-            else -> Result.success(localUser.toUser())
+            else -> emit(Result.success(localUser.toUser()))
         }
-    }
-
+    }.flowOn(coroutineContext)
 }
-

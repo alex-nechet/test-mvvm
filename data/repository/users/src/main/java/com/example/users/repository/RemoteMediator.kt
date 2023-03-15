@@ -4,9 +4,9 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
-import com.example.remote.users.UserRemoteDataSource
 import com.example.local.users.UserLocalDataSource
 import com.example.local.users.model.UserDb
+import com.example.remote.users.UserRemoteDataSource
 import com.example.remote.users.model.UserDto
 import com.example.users.mappers.toDb
 

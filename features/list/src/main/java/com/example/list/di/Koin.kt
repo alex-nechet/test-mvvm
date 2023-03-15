@@ -5,7 +5,6 @@ import com.example.list.ListViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
-
 @OptIn(ExperimentalPagingApi::class)
 val usersListModule = module {
     viewModel { ListViewModel(get()) }

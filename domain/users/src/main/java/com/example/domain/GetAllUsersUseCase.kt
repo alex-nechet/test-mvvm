@@ -7,5 +7,4 @@ import kotlinx.coroutines.flow.Flow
 
 class GetAllUsersUseCase(private val repository: UserRepository) {
     operator fun invoke(): Flow<PagingData<User>> = repository.fetchUsers()
-
 }

@@ -22,7 +22,7 @@ private const val LOGGING_INTERCEPTOR = "loggingInterceptor"
 object Koin {
 
     init {
-        System.loadLibrary(LIB_SECRET_NAME);
+        System.loadLibrary(LIB_SECRET_NAME)
     }
 
     private external fun baseUrlJNI(): String
@@ -50,7 +50,7 @@ object Koin {
             if (debuggable) {
                 builder.addInterceptor(get<Interceptor>(named(LOGGING_INTERCEPTOR)))
             }
-            //for testing purposes token can be empty
+            // for testing purposes token can be empty
             if (tokenJNI().isNotEmpty()) {
                 builder.addInterceptor(get<Interceptor>(named(AUTH_INTERCEPTOR)))
             }

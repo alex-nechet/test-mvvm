@@ -7,5 +7,6 @@ import kotlinx.coroutines.flow.Flow
 interface UserRepository {
 
     fun fetchUsers(): Flow<PagingData<User>>
-    suspend fun fetchUser(userId: Long): Result<User?>
+
+    fun fetchUser(userId: Long): Flow<Result<User?>>
 }

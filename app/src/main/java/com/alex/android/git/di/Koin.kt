@@ -19,12 +19,10 @@ import kotlin.coroutines.CoroutineContext
 
 private const val IO = "io"
 
-
 object Koin {
     private val coroutinesContextModule = module {
         single<CoroutineContext>(named(IO)) { Dispatchers.IO }
     }
-
 
     private val presentationModule = module {
         viewModel { (movieId: Long) -> DetailViewModel(get(), movieId) }
@@ -33,11 +31,11 @@ object Koin {
 
     private val domainModule = module {
         factory { GetAllUsersUseCase(get()) }
-        factory { GetUserDetailsUseCase(get(), get(named(IO))) }
+        factory { GetUserDetailsUseCase(get()) }
     }
 
     private val repositoriesModule = module {
-        single<UserRepository> { UsersRepositoryImpl(get(),get(), get(named(IO))) }
+        single<UserRepository> { UsersRepositoryImpl(get(), get(), get(named(IO))) }
     }
 
     private val remoteModule = module {

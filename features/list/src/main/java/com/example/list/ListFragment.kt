@@ -43,14 +43,13 @@ class ListFragment : Fragment() {
         }
 
         userAdapter.addLoadStateListener {
-            loadStateFooter.loadState =  it.refresh
+            loadStateFooter.loadState = it.refresh
         }
         observeData()
     }
 
     private fun observeData() {
         launchOnEveryStart(viewModel.data) {
-
             userAdapter.submitData(this.lifecycle, it)
         }
     }

@@ -17,8 +17,9 @@ fun ImageView.setImageUrl(imageUrl: String?, centerCrop: Boolean = false) {
     this.load(imageUrl) {
         crossfade(true)
         placeholder(R.drawable.ic_baseline_image_not_supported_24)
-        if (centerCrop)
+        if (centerCrop) {
             transformations(CircleCropTransformation())
+        }
     }
 }
 

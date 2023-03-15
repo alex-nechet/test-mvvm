@@ -11,6 +11,6 @@ import kotlinx.coroutines.flow.stateIn
 class ListViewModel(private val getAllUsersUseCase: GetAllUsersUseCase) : ViewModel() {
 
     val data = viewModelScope.async(start = CoroutineStart.LAZY) {
-       getAllUsersUseCase().cachedIn(viewModelScope).stateIn(viewModelScope)
+        getAllUsersUseCase().cachedIn(viewModelScope).stateIn(viewModelScope)
     }
 }

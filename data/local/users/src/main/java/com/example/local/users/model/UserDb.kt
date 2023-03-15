@@ -29,8 +29,8 @@ data class UserDb(
     val company: String,
     val email: String,
     val bio: String,
-    val twitterUsername : String,
-    val followers : Int,
-    val following : Int,
-    val createdAt : String
+    val twitterUsername: String,
+    val followers: Int,
+    val following: Int,
+    val createdAt: String
 )

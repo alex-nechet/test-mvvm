@@ -1,7 +1,7 @@
 package com.example.users.mappers
 
-import com.example.local.users.model.UserDb
 import com.example.domain.entity.User
+import com.example.local.users.model.UserDb
 import com.example.remote.users.model.UserDto
 
 fun UserDto.toDb() = UserDb(
