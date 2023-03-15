@@ -103,6 +103,7 @@ androidx-databinding = "7.4.2"
 ##                ⬆ = "8.1.0-alpha06"
 ##                ⬆ = "8.1.0-alpha07"
 ##                ⬆ = "8.1.0-alpha08"
+##                ⬆ = "8.1.0-alpha09"
 
 junit-junit = "4.13.2"
 
@@ -142,6 +143,7 @@ com-android-tools-build-gradle = "com.android.tools.build:gradle:7.4.2"
 ##                                                           ⬆ :8.1.0-alpha06"
 ##                                                           ⬆ :8.1.0-alpha07"
 ##                                                           ⬆ :8.1.0-alpha08"
+##                                                           ⬆ :8.1.0-alpha09"
 
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 
@@ -218,3 +220,5 @@ turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "app-cas
 paging-common-ktx = { group = "androidx.paging", name = "paging-common-ktx", version.ref = "androidx-paging" }
 
 viewbinding = { group = "androidx.databinding", name = "viewbinding", version.ref = "androidx-databinding" }
+
+spotless-plugin-gradle = "com.diffplug.spotless:spotless-plugin-gradle:6.17.0"
