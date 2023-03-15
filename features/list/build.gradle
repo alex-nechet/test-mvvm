@@ -40,7 +40,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project(':data:domain:users')
+    implementation project(':domain:users')
     implementation project(':features:shared')
     implementation libs.paging.runtime.ktx
 }

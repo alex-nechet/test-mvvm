@@ -74,7 +74,7 @@ dependencies {
     implementation project(':data:repository:users')
     implementation project(':data:remote:users')
     implementation project(':data:local:users')
-    implementation project(':data:domain:users')
+    implementation project(':domain:users')
     implementation project(':features:shared')
     implementation project(':features:list')
     implementation project(':features:details')

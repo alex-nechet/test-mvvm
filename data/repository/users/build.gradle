@@ -34,7 +34,7 @@ android {
 dependencies {
     implementation project(':data:remote:users')
     implementation project(':data:local:users')
-    implementation project(':data:domain:users')
+    implementation project(':domain:users')
     implementation libs.room.runtime
     kapt libs.room.compiler
     implementation libs.paging.common.ktx
