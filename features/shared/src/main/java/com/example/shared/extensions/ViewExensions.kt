@@ -10,7 +10,6 @@ import coil.transform.CircleCropTransformation
 import com.example.shared.R
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 fun ImageView.setImageUrl(imageUrl: String?, centerCrop: Boolean = false) {
@@ -28,6 +27,6 @@ fun <T> Fragment.launchOnEveryStart(
     collectableAction: suspend (T) -> Unit
 ) = this.lifecycleScope.launch {
     repeatOnLifecycle(Lifecycle.State.STARTED) {
-        deferred.await().collectLatest(collectableAction)
+        deferred.await().collect(collectableAction)
     }
 }

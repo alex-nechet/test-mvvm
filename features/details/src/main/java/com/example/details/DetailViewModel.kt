@@ -18,9 +18,7 @@ class DetailViewModel(
 
     val userDetails = viewModelScope.async(start = CoroutineStart.LAZY) { fetchData() }
 
-    private suspend fun fetchData() = getUserDetails(userId).map { state ->
+    private suspend fun fetchData() = getUserDetailsUseCase(userId).map { state ->
         state.map { UserDetails(it, it.toData()) }
     }.stateIn(viewModelScope)
-
-    private fun getUserDetails(userId: Long) = getUserDetailsUseCase(userId)
 }

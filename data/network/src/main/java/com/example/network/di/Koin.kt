@@ -57,8 +57,8 @@ object Koin {
             builder.build()
         }
         single { Moshi.Builder().add(get()).build() }
-        factory<JsonAdapter.Factory> { KotlinJsonAdapterFactory() }
-        factory<Converter.Factory> { MoshiConverterFactory.create(get()) }
+        single<JsonAdapter.Factory> { KotlinJsonAdapterFactory() }
+        single<Converter.Factory> { MoshiConverterFactory.create(get()) }
         single<Retrofit> {
             Retrofit.Builder()
                 .baseUrl(baseUrlJNI())

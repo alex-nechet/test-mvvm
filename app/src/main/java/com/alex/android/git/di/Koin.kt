@@ -11,22 +11,20 @@ import com.example.network.di.Koin.networkModule
 import com.example.remote.users.UserRemoteDataSource
 import com.example.remote.users.UserRemoteDataSourceImpl
 import com.example.users.repository.UsersRepositoryImpl
-import kotlinx.coroutines.Dispatchers
 import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import kotlin.coroutines.CoroutineContext
 
 private const val IO = "io"
 
 object Koin {
-    private val coroutinesContextModule = module {
-        single<CoroutineContext>(named(IO)) { Dispatchers.IO }
-    }
-
     private val presentationModule = module {
-        viewModel { (movieId: Long) -> DetailViewModel(get(), movieId) }
-        viewModel { ListViewModel(get()) }
+        viewModel { (movieId: Long) ->
+            DetailViewModel(
+                getUserDetailsUseCase = get(),
+                userId = movieId
+            )
+        }
+        viewModel { ListViewModel(getAllUsersUseCase = get()) }
     }
 
     private val domainModule = module {
@@ -35,17 +33,21 @@ object Koin {
     }
 
     private val repositoriesModule = module {
-        single<UserRepository> { UsersRepositoryImpl(get(), get(), get(named(IO))) }
+        single<UserRepository> { UsersRepositoryImpl(remote = get(), local = get()) }
     }
 
     private val remoteModule = module {
-        single<UserRemoteDataSource> { UserRemoteDataSourceImpl(get(), get()) }
+        single<UserRemoteDataSource> {
+            UserRemoteDataSourceImpl(
+                api = get(),
+                resultConverter = get()
+            )
+        }
     }
 
     private val localModule = userLocalDataSource
 
     val modules = listOf(
-        coroutinesContextModule,
         presentationModule,
         domainModule,
         repositoriesModule,

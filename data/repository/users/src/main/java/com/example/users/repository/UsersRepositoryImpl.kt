@@ -11,6 +11,7 @@ import com.example.local.users.UserLocalDataSource
 import com.example.remote.users.UserRemoteDataSource
 import com.example.users.mappers.toDb
 import com.example.users.mappers.toUser
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -22,7 +23,7 @@ private const val PAGE_SIZE = 100
 class UsersRepositoryImpl(
     private val remote: UserRemoteDataSource,
     private val local: UserLocalDataSource,
-    private val coroutineContext: CoroutineContext
+    private val coroutineContext: CoroutineContext = Dispatchers.IO
 ) : UserRepository {
 
     @ExperimentalPagingApi
