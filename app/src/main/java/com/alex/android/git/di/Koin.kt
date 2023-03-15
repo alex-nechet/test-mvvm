@@ -14,15 +14,10 @@ import com.example.users.repository.UsersRepositoryImpl
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
-private const val IO = "io"
-
 object Koin {
     private val presentationModule = module {
         viewModel { (movieId: Long) ->
-            DetailViewModel(
-                getUserDetailsUseCase = get(),
-                userId = movieId
-            )
+            DetailViewModel(getUserDetailsUseCase = get(), userId = movieId)
         }
         viewModel { ListViewModel(getAllUsersUseCase = get()) }
     }
@@ -38,10 +33,7 @@ object Koin {
 
     private val remoteModule = module {
         single<UserRemoteDataSource> {
-            UserRemoteDataSourceImpl(
-                api = get(),
-                resultConverter = get()
-            )
+            UserRemoteDataSourceImpl(api = get(), resultConverter = get())
         }
     }
 
