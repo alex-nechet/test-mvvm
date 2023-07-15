@@ -375,3 +375,5 @@ Capp/.cxx/Debug/k2w5x4e1/x86/.cmake/api/v1/query/client-agp/cache-v2,a\f\afe5b2
 Sapp/.cxx/Debug/k2w5x4e1/x86/.cmake/api/v1/reply/index-2023-03-14T08-59-00-0852.json,0\7\07b4070356210756f33064d05172cbec85bf9825
 ç
 ]app/.cxx/Debug/k2w5x4e1/x86/.cmake/api/v1/reply/target-secret-Debug-9fd25b32f42c2886c91d.json,5\f\5f57e6ff0d4b02dc54d3256a59c5662215d54139
+@
+app/build.gradle,f\4\f4a01d6a4fcb971362ec00a83903fd3902f52164

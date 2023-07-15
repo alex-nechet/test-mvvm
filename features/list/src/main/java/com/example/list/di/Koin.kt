@@ -7,5 +7,5 @@ import org.koin.dsl.module
 
 @OptIn(ExperimentalPagingApi::class)
 val usersListModule = module {
-    viewModel { ListViewModel(get()) }
+    viewModel { ListViewModel() }
 }

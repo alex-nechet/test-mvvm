@@ -17,15 +17,15 @@ import org.koin.dsl.module
 object Koin {
     private val presentationModule = module {
         viewModel { (movieId: Long) ->
-            DetailViewModel(getUserDetailsUseCase = get(), userId = movieId)
+            DetailViewModel( userId = movieId)
         }
-        viewModel { ListViewModel(getAllUsersUseCase = get()) }
+        viewModel { ListViewModel() }
     }
 
-    private val domainModule = module {
-        factory { GetAllUsersUseCase(get()) }
-        factory { GetUserDetailsUseCase(get()) }
-    }
+//    private val domainModule = module {
+//        factory { GetAllUsersUseCase(get()) }
+//        factory { GetUserDetailsUseCase(get()) }
+//    }
 
     private val repositoriesModule = module {
         single<UserRepository> { UsersRepositoryImpl(remote = get(), local = get()) }
@@ -41,7 +41,7 @@ object Koin {
 
     val modules = listOf(
         presentationModule,
-        domainModule,
+//        domainModule,
         repositoriesModule,
         remoteModule,
         localModule,
